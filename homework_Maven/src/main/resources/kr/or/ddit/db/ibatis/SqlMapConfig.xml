@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd" >
+<sqlMapConfig>
+	<properties resource="kr/or/ddit/db/dbInfo.properties"/> <!-- dbinfo를 가져옴 파일에대한 경로는 /로 파일 확장자명까지표기 -->
+	<settings useStatementNamespaces="true"/>	<!-- namespaces를 줘야 다른곳에서 사용할수있음 -->
+	<typeAlias alias="buyerVO" type="kr.or.ddit.vo.BuyerVO"/>	<!-- 사용하기쉽게 가명을줌 -->
+	
+	<transactionManager type="JDBC">	<!-- JDBC형식으로 사용(처리)하며 관리 -->
+		<dataSource type="DBCP">	<!-- 데이터베이스와 애플리케이션을 효율적으로 연결하는 커넥션 풀 -->
+			<property name="driverClassName" value="${driverClassName}"/>	<!-- db의 정보를 입력함 -->
+			<property name="url" value="${url}"/>
+			<property name="username" value="${user}"/>
+			<property name="password" value="${password}"/>
+			<property name="initialSize" value="${initialSize}"/>
+			<property name="maxActive" value="${maxActive}"/>
+			<property name="maxWait" value="${maxWait}"/>
+		</dataSource>
+	</transactionManager>
+	
+	<sqlMap resource="kr/or/ddit/db/ibatis/mappers/buyer.xml"/> <!-- sql문을 사용하기위해 map연결 -->
+</sqlMapConfig>

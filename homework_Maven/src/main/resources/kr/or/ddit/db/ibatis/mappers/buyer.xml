@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="buyer">
+<sql id="selectBuyerFrag">
+	SELECT
+	    BUYER_ID, BUYER_NAME, BUYER_LGU, BUYER_BANK,
+	    BUYER_BANKNO, BUYER_BANKNAME, BUYER_ZIP,
+	    BUYER_ADD1, BUYER_ADD2, BUYER_COMTEL,
+	    BUYER_FAX, BUYER_MAIL, BUYER_CHARGER,
+	    BUYER_TELEXT
+	FROM
+    	BUYER
+</sql>
+<select id="selectBuyerList" resultClass="BuyerVO" >
+	<include refid="selectBuyerFrag"/>
+</select>
+<select id="selectBuyer" resultClass="BuyerVO" parameterClass="String">
+	<include refid="selectBuyerFrag"/>
+	where BUYER_ID=#BUYER_ID#
+</select>
+</sqlMap>
