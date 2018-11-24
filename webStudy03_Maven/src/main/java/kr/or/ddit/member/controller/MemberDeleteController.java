@@ -31,6 +31,16 @@ import kr.or.ddit.vo.MemberVO;
 public class MemberDeleteController implements ICommandHandler{
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		아이디 패스워드가져오고 검증
+//		탈퇴진행 (로직만들기 )
+//		req.setCharacterEncoding("UTF-8");
+//		MemberVO member = new MemberVO();
+//		req.setAttribute("member", member);
+//		try {
+//			BeanUtils.populate(member, req.getParameterMap());
+//		} catch (IllegalAccessException | InvocationTargetException e) {
+//			throw new CommonException(e);
+//		}
 		String mem_id = req.getParameter("mem_id");
 		String mem_pass = req.getParameter("mem_pass");
 		if(StringUtils.isBlank(mem_id)||StringUtils.isBlank(mem_pass)) {
@@ -58,7 +68,7 @@ public class MemberDeleteController implements ICommandHandler{
 			message = "탈퇴약관 : 일주일이내에서 즐대!!! 같은 아이디로 재가입 불가" ;
 			req.getSession().setAttribute("goLink", "/");
 			req.getSession().setAttribute("isRemoved", new Boolean(true));
-//			req.getSession().invalidate();
+//			req.getSession().invalidate(); //세션을 만료하여 로그아웃되게 만듬
 			break;
 		}
 		req.getSession().setAttribute("message", message);

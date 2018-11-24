@@ -21,10 +21,10 @@ import kr.or.ddit.vo.PagingInfoVO;
 public class MemberListController implements ICommandHandler {
 	
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		1. 요청과의 매핑 설정
-//		2. 요청 분석(주소, 파라미터, 메소드, 헤더들...)
 		int currentPage = 1;
+//		1. 요청과의 매핑 설정
 		String page = req.getParameter("page");
+//		2. 요청 분석(주소, 파라미터, 메소드, 헤더들...)
 		if(StringUtils.isNumeric(page)) {
 			currentPage = Integer.parseInt(page);
 		}

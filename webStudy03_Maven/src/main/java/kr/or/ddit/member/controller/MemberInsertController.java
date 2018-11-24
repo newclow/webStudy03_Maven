@@ -46,7 +46,7 @@ public class MemberInsertController implements ICommandHandler {
 	protected String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MemberVO member = new MemberVO();
 		req.setAttribute("member", member);
-//		member.setMem_id(req.getParameter("mem_id"));
+//		member.setMem_id(req.getParameter("mem_id")); //beanutils를 사용하면 일일이 입력안해도됨
 		try {
 			BeanUtils.populate(member, req.getParameterMap());
 		} catch (IllegalAccessException | InvocationTargetException e) {

@@ -27,7 +27,10 @@ import kr.or.ddit.vo.MemberVO;
 public class MemberUpdateController implements ICommandHandler{
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+//		요청 검증
+//		통과
+//		불통시 memberview.jsp로돌아감 각상황마다 에러메시지와 입력했던 기존데이터
+//		수정성공(redirect) 사항과 수성실패(dispetcher)시 memberview가는 방식이 다르다  
 		MemberVO member = new MemberVO();
 		req.setAttribute("member", member);
 //		member.setMem_id(req.getParameter("mem_id"));
@@ -46,7 +49,7 @@ public class MemberUpdateController implements ICommandHandler{
 			ServiceResult result = service.modifyMember(member);
 			switch (result) {
 			case INVALIDPASSWORD:
-				goPage = "member/memberView";
+				goPage = "member/memberView"; //디스패치형식이므로 server에서 server로 갈수있어서 이런형식임
 				message = "비번이 틀렸습니다";
 				break;
 			case FAILED:
@@ -54,7 +57,7 @@ public class MemberUpdateController implements ICommandHandler{
 				message = "서버 오류로 인한 실패, 잠시 뒤 다시 하셈.";
 				break;
 			case OK:
-//				goPage = "/member/memberView.do?who="+member.getMem_id();
+//				goPage = "/member/memberView.do?who="+member.getMem_id(); //redirect형식으로 server에서 server로 갈수 없어 (/WEB-INF/는 serverSide) webservlet으로 형식을 지정해주고 그 형식을 불러서 이동한다
 				goPage = "redirect:/member/mypage.do";
 				break;
 			}
