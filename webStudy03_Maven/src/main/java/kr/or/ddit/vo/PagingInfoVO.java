@@ -14,7 +14,7 @@ import lombok.ToString;
  */
 @Data
 @NoArgsConstructor
-public class PagingInfoVO {
+public class PagingInfoVO<T> {
 	
 	
 	public PagingInfoVO(int screenSize, int blockSize) {
@@ -23,16 +23,21 @@ public class PagingInfoVO {
 		this.blockSize = blockSize;
 	}
 
-	private long totalRecord;
-	private int screenSize = 10;
-	private int blockSize = 5;
-	private long currentPage;
-	private long totalPage;
-	private long startPage;
-	private long endPage;
-	private long startRow;
-	private long endRow;
-	private List<MemberVO> dataList;
+	private long totalRecord;	//총게시물
+	private int screenSize = 10;	//화면에 보이는 게시물
+	private int blockSize = 5;	//화면에 보이는 페이지
+	private long currentPage;	//현재페이지
+	private long totalPage;	//전체페이지
+	private long startPage;	//시작페이지(화면보이는)
+	private long endPage;	//끝페이지(화면보이는)
+	private long startRow;	//시작 게시물 번호(화면보이는)
+	private long endRow;	//끝 게시물번호(화면보이는)
+	private List<T> dataList;	//T(type변수) : 속성변수
+	private T searchVO;
+	private String searchWord;
+	private String searchType;
+	private String funcName = "paging";
+	
 	
 	public void setTotalRecord(long totalRecord) {
 		this.totalRecord = totalRecord;
@@ -57,7 +62,7 @@ public class PagingInfoVO {
 //  </ul>
 	
 	public String getPagingHTML() {
-		String pattern = "<li class='page-item %s'><a class='page-link' href='?page=%d'>%s</a></li>";
+		String pattern = "<li class='page-item %s'><a class='page-link' href='javascript:"+funcName+"(%d);'>%s</a></li>";
 		StringBuffer html = new StringBuffer();
 		html.append("<ul class='pagination'>");
 		if(startPage>1) {

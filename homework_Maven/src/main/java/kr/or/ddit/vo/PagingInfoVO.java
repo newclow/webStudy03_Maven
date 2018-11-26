@@ -14,7 +14,7 @@ import lombok.ToString;
  */
 @Data
 @NoArgsConstructor
-public class PagingInfoVO {
+public class PagingInfoVO<T> {
 	
 	
 	public PagingInfoVO(int screenSize, int blockSize) {
@@ -32,7 +32,7 @@ public class PagingInfoVO {
 	private long endPage;
 	private long startRow;
 	private long endRow;
-	private List<BuyerVO> dataList;
+	private List<T> dataList;
 	
 	public void setTotalRecord(long totalRecord) {
 		this.totalRecord = totalRecord;

@@ -11,15 +11,35 @@
 	    , MEM_AUTH        
 		FROM MEMBER 
 	</sql>
+	<sql id="seacrhFrag">
+	<dynamic prepend=" WHERE "> <!-- 조건에 맞으면 WHERE문을 써서 조건을 확인 -->
+		<isNotEmpty property="searchWord"> <!-- 파라미터안에 searchWord가 비어있지않으면 -->
+			<isEqual property="searchType" compareValue="name"> <!-- 이름안에 어떤값이 들어가있으면 -->
+				MEM_NAME LIKE '%'||#searchWord#||'%'
+			</isEqual>
+			<isEqual property="searchType" compareValue="address">
+				MEM_ADD1 LIKE
+				'%'||#searchWord#||'%'
+			</isEqual>
+			<isEqual property="searchType" compareValue="all">
+				MEM_NAME LIKE
+				'%'||#searchWord#||'%'
+				OR
+				MEM_ADD1 LIKE '%'||#searchWord#||'%'
+			</isEqual>
+		</isNotEmpty>
+	</dynamic>
+	</sql>
 	
 	<select id="selectMember" parameterClass="string" resultClass="memberVO">
 		<include refid="Member.selectMemberFrag"/>                                           
 		WHERE MEM_ID = #asdfsd#                                       
 	</select>
 	
-	<select id="selectTotalRecord" resultClass="long">
-		SELECT COUNT(*)
-		FROM MEMBER
+	<select id="selectTotalRecord" resultClass="long" parameterClass="pagingVO">
+	SELECT COUNT(*)
+	FROM MEMBER
+	<include refid="Member.seacrhFrag"/>
 	</select>
 	
 	<select id="selectMemberList" resultClass="memberVO" parameterClass="pagingVO">
@@ -28,10 +48,12 @@
 				SELECT ROWNUM RNUM, A.*
 				FROM (
 						<include refid="Member.selectMemberFrag"/> 
+						<include refid="Member.seacrhFrag"/>
+						
 						ORDER BY ROWID DESC 	) A   ) B
 		<![CDATA[			
 		WHERE RNUM >= #startRow# AND RNUM <= #endRow#		
-		]]>			
+		]]>	
 	</select>
 	<insert id="insertMember" parameterClass="memberVO">
 		INSERT INTO member (

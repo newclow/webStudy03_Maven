@@ -1,10 +1,11 @@
+<%@page import="kr.or.ddit.vo.PagingInfoVO"%>
 <%@page import="kr.or.ddit.vo.BuyerVO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	List<BuyerVO> buyerList = (List<BuyerVO>)request.getAttribute("buyerList");
-	
+	PagingInfoVO pagingVO = (PagingInfoVO)request.getAttribute("pagingVO");
+	List<BuyerVO> buyerList = pagingVO.getDataList();
 %>
 <!DOCTYPE html>
 <html>

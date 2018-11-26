@@ -3,26 +3,45 @@ package kr.or.ddit.buyer.service;
 import java.util.List;
 
 import kr.or.ddit.CommonException;
+import kr.or.ddit.ServiceResult;
 import kr.or.ddit.buyer.dao.BuyerDAOImpl;
 import kr.or.ddit.buyer.dao.IBuyerDAO;
 import kr.or.ddit.vo.BuyerVO;
+import kr.or.ddit.vo.PagingInfoVO;
 
 public class BuyerServiceImpl implements IBuyerService {
 	
 	IBuyerDAO buyerDAO = new BuyerDAOImpl();
 
 	@Override
-	public List<BuyerVO> retrieveBuyerList() {
-		return buyerDAO.selectBuyerList();
+	public ServiceResult createBuyer(BuyerVO buyer) {
+		return null;
+	}
+
+	@Override
+	public List<BuyerVO> retrieveBuyerList(PagingInfoVO<BuyerVO> pagingVO) {
+		return null;
+	}
+
+	@Override
+	public long retrieveMemberCount(PagingInfoVO<BuyerVO> pagingVO) {
+		return 0;
 	}
 
 	@Override
 	public BuyerVO retrieveBuyer(String buy_id) {
-		BuyerVO buyer = buyerDAO.selectBuyer(buy_id);
-		if (buyer == null) {
-			throw new CommonException(buy_id+"에 해당하는 회원은 없습니다.");
-		}
-		return buyer;
+		return null;
 	}
+
+	@Override
+	public ServiceResult modifiedBuyer(BuyerVO buyer) {
+		return null;
+	}
+
+	@Override
+	public ServiceResult removeBuyer(BuyerVO buyer) {
+		return null;
+	}
+
 
 }

@@ -11,10 +11,15 @@
 	FROM
     	BUYER
 </sql>
-<select id="selectBuyerList" resultClass="BuyerVO" >
-	<include refid="selectBuyerFrag"/>
+<select id="selectTotalRecord" resultClass="long" parameterClass="pagingVO">
+	SELECT COUNT(*) FROM BUYER
 </select>
-<select id="selectBuyer" resultClass="BuyerVO" parameterClass="String">
+<select id="selectBuyerList" resultClass="buyerVO" parameterClass="pagingVO">
+	SELECT ROWNUM
+	FROM BUYER INNER JOIN LRPOD ON (BUYER_LGU = LPROD_GU)
+	
+</select>
+<select id="selectBuyer" resultClass="buyerVO" parameterClass="String">
 	<include refid="selectBuyerFrag"/>
 	where BUYER_ID=#BUYER_ID#
 </select>
