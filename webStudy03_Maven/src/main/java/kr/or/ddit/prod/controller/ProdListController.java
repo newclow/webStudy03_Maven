@@ -1,6 +1,7 @@
 package kr.or.ddit.prod.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.ddit.mvc.ICommandHandler;
 import kr.or.ddit.prod.dao.IOtherDAO;
@@ -51,14 +54,33 @@ public class ProdListController implements ICommandHandler {
 //		5. 콘텐츠(model) 확보
 		long totalRecord = service.retrieveProdCount(pagingVO); //페이지수를 가져오기위해
 		pagingVO.setTotalRecord(totalRecord); //전체페이지가 연산됨
-		
 		List<ProdVO> prodList = service.retrieveProdList(pagingVO); //페이지목록을 가져오기위해 
 		pagingVO.setDataList(prodList);	//넣어주면 pagingvo에 모든 페이지데이터가 들어가게됨
+		
+		//Accept헤더를 통해 동기/비동기 요청 여부를 확인하고
+		//동기요청이라면 view Layer를 통해 응답이 전송
+		//비동기 요청이라면 pagingVO를 marshalling 한 JSON응답이 전송
+		
+		String accept = req.getHeader("Accept");
+		if (StringUtils.containsIgnoreCase(accept, "json")) {
+			//JSON
+			resp.setContentType("application/json;charset=UTF-8");
+			ObjectMapper mapper = new ObjectMapper();
+			try(
+				PrintWriter out = resp.getWriter();
+			){
+				mapper.writeValue(out, pagingVO);
+			}
+			return null;
+		}else {
+			//HTML
+			req.setAttribute("pagingVO", pagingVO);
+			return "prod/prodList";
+		}
+		
 //		6. v.l 선택
 //		7. scope를 통해 model공유
-		req.setAttribute("pagingVO", pagingVO);
 //		8. 이동방식 결정하고 vl로 이동
-		return "prod/prodList";
 	}
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
-<sqlMap namespace="buyer">
+<sqlMap namespace="Buyer">
 <sql id="selectBuyerFrag">
 	SELECT
 	    BUYER_ID, BUYER_NAME, BUYER_LGU, BUYER_BANK,
@@ -15,9 +15,13 @@
 	SELECT COUNT(*) FROM BUYER
 </select>
 <select id="selectBuyerList" resultClass="buyerVO" parameterClass="pagingVO">
-	SELECT ROWNUM
-	FROM BUYER INNER JOIN LRPOD ON (BUYER_LGU = LPROD_GU)
-	
+	SELECT A.*
+	FROM(
+		SELECT ROWNUM RNUM, BUYER_ID, BUYER_NAME, BUYER_BANK,
+		    BUYER_BANKNO, BUYER_BANKNAME
+		FROM BUYER
+	) A
+	<![CDATA[WHERE RNUM >=#startRow# AND RNUM <= #endRow#]]>
 </select>
 <select id="selectBuyer" resultClass="buyerVO" parameterClass="String">
 	<include refid="selectBuyerFrag"/>

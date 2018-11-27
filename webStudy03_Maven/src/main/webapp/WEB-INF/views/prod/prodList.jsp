@@ -1,20 +1,18 @@
 <%@page import="java.util.Map.Entry"%>
 <%@page import="kr.or.ddit.vo.BuyerVO"%>
 <%@page import="java.util.Map"%>
-<%@page import="kr.or.ddit.vo.ProdVO"%>
 <%@page import="java.util.List"%>
+<%@page import="kr.or.ddit.vo.ProdVO"%>
 <%@page import="kr.or.ddit.vo.PagingInfoVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	PagingInfoVO<ProdVO> pagingVO = (PagingInfoVO<ProdVO>)request.getAttribute("pagingVO"); //전달되고 있는 데이터를 먼저 꺼낸다.
+	PagingInfoVO<ProdVO> pagingVO = (PagingInfoVO<ProdVO>)request.getAttribute("pagingVO");
 	List<ProdVO> prodList = pagingVO.getDataList();
 	
-	Map<String, String> lprodList = (Map)request.getAttribute("lprodList");
-	List<BuyerVO> buyerList = (List)request.getAttribute("buyerList");
-	
-	
-%>
+	Map<String, String> lprodList = (Map) request.getAttribute("lprodList");
+	List<BuyerVO> buyerList = (List) request.getAttribute("buyerList");
+%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,68 +22,107 @@
 <script type="text/javascript" 
 	src="<%=request.getContextPath() %>/js/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>	
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	function <%=pagingVO.getFuncName() %>(page){
-		document.searchForm.page.value=page;
-		document.searchForm.submit();
+		$("[name='searchForm']").find("[name='page']").val(page);
+// 		document.searchForm.page.value=page;
+		$("[name='searchForm']").submit();
+// 		document.searchForm.submit();
 	}
-	$(function() {
+	$(function(){
 		var prod_lguTag = $("[name='prod_lgu']");
 		var prod_buyerTag = $("[name='prod_buyer']");
-		prod_lguTag.val("${pagingVO.searchVO.prod_lgu}");
-		prod_buyerTag.val("${pagingVO.searchVO.prod_buyer}");
-		prod_lguTag.on("change",
-				function() {
-					var lprod_gu = $(this).val();
-					var buyerOptions = prod_buyerTag.find("option");
-					$(buyerOptions).hide(); //안보이게 만듬
-					if (lprod_gu) {
-						var buyerOptions2 = prod_buyerTag.find(
-								"option." + lprod_gu);
-						$(buyerOptions2).show(); //보이게만듬
-					} else {
-						$(buyerOptions).show();
-					}
-		});
-		$("#listBody").on("click", "tr" ,function(){	//tr태그하나만 선택하겠다는 것
-			var prod_id = $(this).find("td:first").text();
-			location.href = "<%=request.getContextPath() %>/prod/prodView.do?what="+prod_id;
+		prod_lguTag.val("${pagingVO.searchVO.prod_lgu }");
+		prod_buyerTag.val("${pagingVO.searchVO.prod_buyer }");
+		prod_lguTag.on("change", function(){
+			var lprod_gu = $(this).val();
+			var buyerOptions = prod_buyerTag.find("option");
+			$(buyerOptions).hide();
+			if(lprod_gu){
+				var buyerOptions2 = prod_buyerTag.find("option."+lprod_gu);
+				$(buyerOptions2).show();
+			}else{
+				$(buyerOptions).show();
+			}
 			
+		});
+		var listBody = $("#listBody");
+		listBody.on("click", "tr" ,function(){
+			var prod_id = $(this).find("td:first").text();
+			location.href = "<%=request.getContextPath()%>/prod/prodView.do?what="+prod_id;
+		});
+		
+		$("[name='searchForm']").on("submit", function(event){
+			event.preventDefault();
+			var data = $(this).serialize(); // queryString 생성
+			$.ajax({
+				data:data,
+				dataType:"json",
+				success:function(resp){
+					var prodList = resp.dataList;
+					var html = "";
+					if (prodList) {
+						$.each(prodList, function(idx, prod){
+							html += "<tr>";
+							html += "<td>"+prod.prod_id+"</td>"
+							html += "<td>"+prod.prod_name+"</td>"
+							html += "<td>"+prod.lprod_nm+"</td>"
+							html += "<td>"+prod.buyer_name+"</td>"
+							html += "<td>"+prod.prod_cost+"</td>"
+							html += "<td>"+prod.prod_outline+"</td>"
+							html += "<td>"+prod.prod_mileage+"</td>"
+							html += "</tr>";
+						});
+					}else {
+						html += "<tr><td colspan='7'>상품이 없음</td></tr>"
+					}
+					listBody.html(html);
+					$("#pagingArea").html(resp.pagingHTML);
+					$("[name='page']").val("");
+				},
+				error:function(){
+					
+				}
+			});
+			return false;
 		});
 	});
 </script>
 </head>
 <body>
-<!-- 스크린사이즈7 -->
-<!-- 블럭사이즈4 -->
-	<form name="searchForm" >
-	<input type="hidden" name="page" /> 
-		<select name="prod_lgu">
-			<option value="">분류선택</option>
-			<%
-				for (Entry<String, String> entry : lprodList.entrySet()) {
-			%>
-			<option value="<%=entry.getKey()%>"><%=entry.getValue()%></option>
-			<%
-				}
-			%>
-		</select> <select name="prod_buyer">
-			<option>거래처선택</option>
-			<%
-				for (BuyerVO buyer : buyerList) {
-			%>
-			<option value="<%=buyer.getBuyer_id()%>"
-				class="<%=buyer.getBuyer_lgu()%>"><%=buyer.getBuyer_name()%></option>
-			<%
-				}
-			%>
-		</select>
-		<input type="text" name="prod_name" value="${pagingVO.searchVO.prod_name}"/>
-		<input type="submit" value="검색" />
-	</form>
-	<table class="table">
-	<thead  class="thead-dark">
+<!-- 스크린사이즈 7 -->
+<!-- 블럭사이즈 4  -->
+<form name="searchForm" >
+	<input type="text" name="page" />
+	<select name="prod_lgu">
+		<option value="">분류선택</option>
+		<%
+			for(Entry<String, String> entry : lprodList.entrySet()){
+				%>
+				<option value="<%=entry.getKey()%>"><%=entry.getValue() %></option>
+				<%
+			}
+		%>
+	</select>
+	<select name="prod_buyer">
+		<option value="">거래처선택</option>
+		<%
+			for(BuyerVO buyer : buyerList){
+				%>
+				<option value="<%=buyer.getBuyer_id() %>" class="<%=buyer.getBuyer_lgu()%>"><%=buyer.getBuyer_name() %></option>
+				<%
+			}
+		%>
+	</select>
+	<input type="text" name="prod_name" value="${pagingVO.searchVO.prod_name }" />
+	<input type="submit" value="검색" />
+</form>
+<input type="button" class="btn btn-info" value="신규상품등록" 
+	onclick="location.href='<%=request.getContextPath() %>/prod/prodForm.do';"
+/>
+<table class="table">
+	<thead>
 		<tr>
 			<th>상품코드</th>
 			<th>상품명</th>
@@ -98,7 +135,7 @@
 	</thead>
 	<tbody id="listBody">
 		<%
-			if(prodList.size() > 0){
+			if(prodList.size()>0){
 				for(ProdVO prod : prodList){
 					%>
 					<tr>
@@ -107,26 +144,25 @@
 						<td><%=prod.getLprod_nm() %></td>
 						<td><%=prod.getBuyer_name() %></td>
 						<td><%=prod.getProd_price() %></td>
-						<td><%=prod.getProd_outline()%></td>
+						<td><%=prod.getProd_outline() %></td>
 						<td><%=prod.getProd_mileage() %></td>
 					</tr>
 					<%
 				}
-			} else{
+			}else{
 				%>
 				<tr>
-					<td colspan="7">조건에 맞는 상품이 없습니다</td>
+					<td colspan="7">조건에 맞는 상품이 없슴.</td>
 				</tr>
 				<%
 			}
-		
 		%>
 	</tbody>
 	<tfoot>
 		<tr>
 			<td colspan="7">
-				<nav aria-label="Page navigation example">
-				<%=pagingVO.getPagingHTML() %>
+				<nav aria-label="Page navigation example" id="pagingArea">
+					<%=pagingVO.getPagingHTML() %>
 				</nav>
 			</td>
 		</tr>

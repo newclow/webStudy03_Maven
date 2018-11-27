@@ -121,6 +121,13 @@
 			<td><%=prod.getProd_mileage() %></td>
 		</tr>
 	</table>
+	<%
+	boolean authorized = false;
+	MemberVO authMember2 = (MemberVO)session.getAttribute("authMember");	
+	authorized = authMember2 != null && "ROLE_ADMIN".equals(authMember2.getMem_auth());
+		
+	if(authorized){
+%>
 	<h4>구매자 목록</h4>
 	<table class="table">
 		<thead>
@@ -158,5 +165,8 @@
 		%>
 		</tbody>
 	</table>
+		<%
+	}
+	%>
 </body>
 </html>

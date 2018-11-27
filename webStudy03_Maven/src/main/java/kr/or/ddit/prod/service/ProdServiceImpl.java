@@ -2,6 +2,8 @@ package kr.or.ddit.prod.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import kr.or.ddit.ServiceResult;
 import kr.or.ddit.prod.dao.IProdDAO;
 import kr.or.ddit.prod.dao.ProdDAOImpl;
@@ -14,7 +16,14 @@ public class ProdServiceImpl implements IProdService {
 
 	@Override
 	public ServiceResult createProd(ProdVO prod) {
-		return null;
+		ServiceResult result = null;
+			String str = prodDAO.insertProd(prod);
+			if (StringUtils.isNotBlank(str)) {
+				result = ServiceResult.OK;
+			}else {
+				result = ServiceResult.FAILED;
+			}
+			return result;
 	}
 
 	@Override

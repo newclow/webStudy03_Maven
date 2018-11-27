@@ -37,14 +37,14 @@
 		<result property="buyer_charger" column="BUYER_CHARGER" />
 		<result property="buyer_comtel" column="BUYER_COMTEL" />
 	</resultMap>
-	<resultMap class="memberVO" id="memberMap">
-		<result property="mem_id" column="MEM_ID" />
-		<result property="mem_name" column="MEM_NAME" />
-		<result property="mem_add1" column="MEM_ADD1" />
-		<result property="mem_add2" column="MEM_ADD2" />
-		<result property="mem_hp" column="MEM_HP" />
-		<result property="mem_mail" column="MEM_MAIL" />
-	</resultMap>
+<!-- 	<resultMap class="memberVO" id="memberMap"> -->
+<!-- 		<result property="mem_id" column="MEM_ID" /> -->
+<!-- 		<result property="mem_name" column="MEM_NAME" /> -->
+<!-- 		<result property="mem_add1" column="MEM_ADD1" /> -->
+<!-- 		<result property="mem_add2" column="MEM_ADD2" /> -->
+<!-- 		<result property="mem_hp" column="MEM_HP" /> -->
+<!-- 		<result property="mem_mail" column="MEM_MAIL" /> -->
+<!-- 	</resultMap> -->
 	<resultMap class="prodVO" id="prodMap" groupBy="prod_id"> <!-- 설명필요 -->
 		<result property="prod_id" column="PROD_ID"/> 
 		<result property="prod_name" column="PROD_NAME"/>
@@ -69,10 +69,15 @@
 		<result property="prod_mileage" column="PROD_MILEAGE"/>
 		
 		<result property="buyer" resultMap="Prod.buyerMap"/> <!-- map으로 만들어준걸 prodVO의 buyer에 할당해준다.// 컬럼하나의 값을 주는게 아니라 래코드를준다  -->
-		<result property="customers" resultMap="Prod.memberMap" javaType="java.util.List" />
+		<result property="customers" javaType="java.util.List" select="Prod.selectCustomers" column="PROD_ID"/>
 		
 	</resultMap>
-	<select id="selectProd" parameterClass="String" resultMap="prodMap">
+	<select id="selectCustomers" resultClass="memberVO">
+		SELECT MEM_ID, MEM_NAME, MEM_ADD1, MEM_ADD2, MEM_HP, MEM_MAIL
+		FROM CART INNER JOIN MEMBER ON(CART_MEMBER = MEM_ID)
+		WHERE CART_PROD = #prod_id#
+	</select>
+	<select id="selectProd" parameterClass="String" resultMap="Prod.prodMap">
 		SELECT
 		    PROD_ID, PROD_NAME, PROD_LGU,
 		    PROD_BUYER, PROD_COST, PROD_PRICE,
@@ -81,12 +86,37 @@
 		    PROD_PROPERSTOCK, PROD_SIZE, PROD_COLOR,
 		    PROD_DELIVERY, PROD_UNIT, PROD_QTYIN,
 		    PROD_QTYSALE, PROD_MILEAGE,
-		    LPROD_NM , BUYER_NAME, BUYER_ADD1, BUYER_CHARGER, BUYER_COMTEL,
-            MEM_ID, MEM_NAME, MEM_ADD1, MEM_ADD2, MEM_HP, MEM_MAIL
+		    LPROD_NM , 
+		    BUYER_NAME, BUYER_ADD1, BUYER_CHARGER, BUYER_COMTEL
 		FROM PROD INNER JOIN LPROD ON(PROD_LGU = LPROD_GU)
 				  INNER JOIN BUYER ON(PROD_BUYER = BUYER_ID)
-                  LEFT OUTER JOIN CART ON(PROD_ID = CART_PROD) <!-- 제품을 안살수도있어서(CART에 없을수도있어서) 교집합만으로는 안되며 차집합도 있어야 한다 그래서 OUTER JOIN으로 해야되는데 PROD에 안팔린게 남았으므로 LEFT OUTER JOIN을 해줘야한다. -->
-                  LEFT OUTER JOIN MEMBER ON(CART_MEMBER = MEM_ID) 
+<!--                   LEFT OUTER JOIN CART ON(PROD_ID = CART_PROD) 제품을 안살수도있어서(CART에 없을수도있어서) 교집합만으로는 안되며 차집합도 있어야 한다 그래서 OUTER JOIN으로 해야되는데 PROD에 안팔린게 남았으므로 LEFT OUTER JOIN을 해줘야한다. -->
+<!--                   LEFT OUTER JOIN MEMBER ON(CART_MEMBER = MEM_ID)  -->
 		WHERE PROD_ID = #PROD_ID#
 	</select>
+	<insert id="insertProd" parameterClass="prodVO">
+		<selectKey resultClass="String" keyProperty="prod_id">
+<!-- 			PK생성쿼리 -->
+			SELECT #prod_lgu#||LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PROD_ID),5)), 0) +1, 6, '0')
+			FROM PROD
+			WHERE PROD_LGU = #prod_lgu#;
+		</selectKey>
+		INSERT INTO PROD(
+			  PROD_ID, PROD_NAME,PROD_LGU,
+   			  PROD_BUYER,PROD_COST, PROD_PRICE,
+  			  PROD_SALE, PROD_OUTLINE, PROD_DETAIL,
+  			  PROD_IMG, PROD_TOTALSTOCK, PROD_INSDATE,
+  			  PROD_PROPERSTOCK, PROD_SIZE, PROD_COLOR,
+  			  PROD_DELIVERY, PROD_UNIT, PROD_QTYIN,
+  			  PROD_QTYSALE, PROD_MILEAGE
+		) VALUES (
+			  #prod_id#, #prod_name#,#prod_lgu#,
+   			  #prod_buyer#,#prod_cost#, #prod_price#,
+  			  #prod_sale#, #prod_outline#, #prod_detail#,
+  			  #prod_img#, #prod_totalstock#, TO_DATE(#prod_insdate#, 'YYYY-MM-DD'),
+  			  #prod_properstock#, #prod_size#, #prod_color#,
+  			  #prod_delivery#, #prod_unit#, #prod_qtyin#,
+  			  #prod_qtysale#, #prod_mileage#
+		)
+	</insert>
 </sqlMap>

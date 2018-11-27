@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	PagingInfoVO pagingVO = (PagingInfoVO)request.getAttribute("pagingVO");
+	PagingInfoVO<BuyerVO> pagingVO = (PagingInfoVO<BuyerVO>)request.getAttribute("pagingVO");
 	List<BuyerVO> buyerList = pagingVO.getDataList();
 %>
 <!DOCTYPE html>
@@ -19,7 +19,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>	
 </head>
 <body>
-<h4> 회원 목록 </h4>
+<h4>거래처 목록 </h4>
 <!-- <input type="button" class="btn btn-success" value="신규등록"  -->
 <%-- 	onclick="location.href='<%=request.getContextPath() %>/buyer/buyerInsert.do';" --%>
 <!-- /> -->
@@ -28,17 +28,17 @@
 			<tr>
 				<th>거래처ID</th>
 				<th>거래처명</th>
-				<th>거래품목</th>
+<!-- 				<th>거래품목</th> -->
 				<th>거래처은행</th>
 				<th>계좌</th>
 				<th>예금주</th>
-				<th>우편번호</th>
-				<th>주소</th>
-				<th>상세주소</th>
-				<th>거래처번호</th>
-				<th>팩스번호</th>
-				<th>메일</th>
-				<th>입금자명</th>
+<!-- 				<th>우편번호</th> -->
+<!-- 				<th>주소</th> -->
+<!-- 				<th>상세주소</th> -->
+<!-- 				<th>거래처번호</th> -->
+<!-- 				<th>팩스번호</th> -->
+<!-- 				<th>메일</th> -->
+<!-- 				<th>입금자명</th> -->
 			</tr>
 		</thead>
 		<tbody>
@@ -53,38 +53,37 @@
 			<tr>
 				<td><%=buyer.getBuyer_id()%></td>
 				<td><%=buyer.getBuyer_name()%></td>
-				<td><%=buyer.getBuyer_lgu()%></td>
 				<td><%=buyer.getBuyer_bank()%></td>
 				<td><%=buyer.getBuyer_bankno()%></td>
 				<td><%=buyer.getBuyer_bankname()%></td>
-				<td><%=buyer.getBuyer_zip()%></td>
-				<td><%=buyer.getBuyer_add1()%></td>
-				<td><%=buyer.getBuyer_add2()%></td>
-				<td><%=buyer.getBuyer_comtel()%></td>
-				<td><%=buyer.getBuyer_fax()%></td>
-				<td><%=buyer.getBuyer_mail()%></td>
-				<td><%=buyer.getBuyer_charger()%></td>
+<%-- 				<td><%=buyer.getBuyer_zip()%></td> --%>
+<%-- 				<td><%=buyer.getBuyer_add1()%></td> --%>
+<%-- 				<td><%=buyer.getBuyer_add2()%></td> --%>
+<%-- 				<td><%=buyer.getBuyer_comtel()%></td> --%>
+<%-- 				<td><%=buyer.getBuyer_fax()%></td> --%>
+<%-- 				<td><%=buyer.getBuyer_mail()%></td> --%>
+<%-- 				<td><%=buyer.getBuyer_charger()%></td> --%>
 			</tr>
 			<%
 					}
 				} else {
 			%>
 			<tr>
-				<td colspan="6">회원의 목록이 없음.</td>
+				<td colspan="5">거래처 목록이 없음.</td>
 			</tr>
 			<%
 				}
 %>
 		</tbody>
-		<!-- 	<tfoot> -->
-<!-- 		<tr> -->
-<!-- 			<td colspan="6"> -->
-<!-- 				<nav aria-label="Page navigation example"> -->
-<%-- 				 	<%=pagingVO.getPagingHTML() %>  --%>
-<!-- 				</nav>			 -->
-<!-- 			</td> -->
-<!-- 		</tr> -->
-<!-- 	</tfoot> -->
+		<tfoot>
+		<tr>
+			<td colspan="5">
+				<nav aria-label="Page navigation example">
+				 	<%=pagingVO.getPagingHTML() %> 
+				</nav>			
+			</td>
+		</tr>
+	</tfoot>
 </table>
 </body>
 </html>

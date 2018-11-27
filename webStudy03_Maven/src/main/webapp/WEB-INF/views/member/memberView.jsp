@@ -1,3 +1,5 @@
+<%@page import="kr.or.ddit.vo.ProdVO"%>
+<%@page import="java.util.List"%>
 <%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -292,6 +294,45 @@ if(mutable){
 <!-- 				</tr> -->
 <!-- 	</tbody> -->
 <!-- </table> -->
+
+<h4>구매상품목록</h4>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>상품코드</th>
+				<th>상품명</th>
+				<th>구매가</th>
+				<th>판매가</th>
+				<th>상품개요</th>
+			</tr>
+		</thead>
+		<tbody>
+		<%
+			List<ProdVO> prodList = member.getProdList();
+			if(prodList != null && prodList.size() > 0){
+				for(ProdVO prod : prodList){
+					%>
+					<tr>
+						<td><%=prod.getProd_id() %></td>
+						<td><%=prod.getProd_name() %></td>
+						<td><%=prod.getProd_cost() %></td>
+						<td><%=prod.getProd_price() %></td>
+						<td><%=prod.getProd_outline() %></td>
+					</tr>
+					<%
+				}
+			}else{
+				%>
+				<tr>
+					<td colspan="5">구매물품이 없습니다.</td>
+				</tr>
+				<%
+			}
+ 			
+		%>
+		</tbody>
+	</table>
+
 </body>
 </html>
 

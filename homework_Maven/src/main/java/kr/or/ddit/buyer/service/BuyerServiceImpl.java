@@ -20,17 +20,17 @@ public class BuyerServiceImpl implements IBuyerService {
 
 	@Override
 	public List<BuyerVO> retrieveBuyerList(PagingInfoVO<BuyerVO> pagingVO) {
-		return null;
+		return buyerDAO.selectBuyerList(pagingVO);
 	}
 
 	@Override
 	public long retrieveMemberCount(PagingInfoVO<BuyerVO> pagingVO) {
-		return 0;
+		return buyerDAO.selectTotalRecord(pagingVO);
 	}
 
 	@Override
 	public BuyerVO retrieveBuyer(String buy_id) {
-		return null;
+		return buyerDAO.selectBuyer(buy_id);
 	}
 
 	@Override

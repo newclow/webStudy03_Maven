@@ -18,5 +18,7 @@ public interface IOtherDAO {
 	 */
 	public List<BuyerVO> selectBuyerList(String buyer_lgu);
 	
+	public List<String> selectLprod(String lprod_gu);
 	
+	public List<String> selectBuyer(String buyer_id);
 }

@@ -31,4 +31,22 @@ public class OtherDAOImpl implements IOtherDAO {
 			}
 	}
 
+	@Override
+	public List<String> selectLprod(String lprod_gu) {
+		try {
+		return sqlMapClient.queryForList("Other.selectLprod", lprod_gu);
+		}catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public List<String> selectBuyer(String buyer_id) {
+		try {
+			return sqlMapClient.queryForList("Other.selectBuyer", buyer_id);
+			}catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+	}
+
 }
