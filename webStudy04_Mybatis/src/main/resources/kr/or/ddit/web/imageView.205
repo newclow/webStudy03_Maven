@@ -1,0 +1,12 @@
+<html>
+	<head>
+	</head>
+		<body>
+			<form action="imgService" method="GET">
+			   <select name="imageSel">
+			   		@option
+			   </select>
+			   <input type="submit" value="전송"/>
+		   	</form>
+		</body>
+</html>

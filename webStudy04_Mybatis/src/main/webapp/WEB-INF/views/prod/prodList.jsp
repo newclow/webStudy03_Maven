@@ -10,7 +10,7 @@
 	PagingInfoVO<ProdVO> pagingVO = (PagingInfoVO<ProdVO>)request.getAttribute("pagingVO");
 	List<ProdVO> prodList = pagingVO.getDataList();
 	
-	Map<String, String> lprodList = (Map) request.getAttribute("lprodList");
+	List<Map<String, Object>> lprodList = (List) request.getAttribute("lprodList");
 	List<BuyerVO> buyerList = (List) request.getAttribute("buyerList");
 %>    
 <!DOCTYPE html>
@@ -98,9 +98,9 @@
 	<select name="prod_lgu">
 		<option value="">분류선택</option>
 		<%
-			for(Entry<String, String> entry : lprodList.entrySet()){
+			for(Map<String, Object> lprod : lprodList){
 				%>
-				<option value="<%=entry.getKey()%>"><%=entry.getValue() %></option>
+				<option value="<%=lprod.get("LPROD_GU")%>"><%=lprod.get("LPROD_NM") %></option>
 				<%
 			}
 		%>
