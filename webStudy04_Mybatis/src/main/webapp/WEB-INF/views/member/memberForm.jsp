@@ -1,6 +1,6 @@
-<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +15,7 @@
 <link rel="stylesheet"
 	href="https://jqueryui.com/resources/demos/style.css">
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/js/jquery-3.3.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
@@ -26,12 +26,11 @@
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	crossorigin="anonymous"></script>
 <script type="text/javascript">
-	$(function(){
-		<%String message = (String) request.getAttribute("message");
-			if (StringUtils.isNotBlank(message)) {%>
-					alert("<%=message%>");
-		<%}%>
-	$("[type='date']").datepicker({
+	$(function() {
+		<c:if test="${not empty message }">
+		alert("${message }");
+		</c:if>
+		$("[type='date']").datepicker({
 			dateFormat : "yy-mm-dd"
 		});
 	});
@@ -39,18 +38,19 @@
 </head>
 <body>
 	<h4>회원 가입</h4>
-	<jsp:useBean id="member" class="kr.or.ddit.vo.MemberVO" scope="request" />
-	<jsp:useBean id="errors" class="java.util.LinkedHashMap"
-		scope="request"></jsp:useBean>
+	${memberVO.request.member }
+<%-- 	<jsp:useBean id="member" class="kr.or.ddit.vo.MemberVO" scope="request" /> --%>
+<%-- 	<jsp:useBean id="errors" class="java.util.LinkedHashMap" --%>
+<%-- 		scope="request"></jsp:useBean> --%>
 	<form method="post">
 		<table>
 			<tr>
 				<th>회원아이디</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_id"
-							value="<%=member.getMem_id()%>" />
+							value="${member.mem_id }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_id")%></span>
+							<span class="error">${errors["mem_id"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -58,9 +58,9 @@
 				<th>비밀번호</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_pass"
-							value="<%=member.getMem_pass()%>" />
+							value="${member.mem_pass }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_pass")%></span>
+							<span class="error">${errors["mem_pass"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -68,9 +68,9 @@
 				<th>회원명</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_name"
-							value="<%=member.getMem_name()%>" />
+							value="${member.mem_name }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_name")%></span>
+							<span class="error">${errors["mem_name"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -78,13 +78,12 @@
 				<th>주민번호</th>
 				<td><div class="input-group">
 						<input class="form-control col-md-3" type="text" name="mem_regno1"
-							value="<%=member.getMem_regno1()%>" />
-						<span class="input-group-text">-</span>	
+							value="${member.mem_regno1 }" /> <span class="input-group-text">-</span>
 						<input class="form-control col-md-3" type="text" name="mem_regno2"
-							value="<%=member.getMem_regno2()%>" />
+							value="${member.mem_regno2 }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_regno1")%></span>
-							<span class="error"><%=errors.get("mem_regno2")%></span>
+							<span class="error">${errors["mem_regno1"] }</span> <span
+								class="error">${errors["mem_regno2"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -92,9 +91,9 @@
 				<th>생일</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_bir"
-							value="<%=member.getMem_bir()%>" />
+							value="${member.mem_bir }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_bir")%></span>
+							<span class="error">${errors["mem_bir"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -102,9 +101,9 @@
 				<th>우편번호</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_zip"
-							value="<%=member.getMem_zip()%>" />
+							value="${member.mem_zip }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_zip")%></span>
+							<span class="error">${errors["mem_zip"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -112,9 +111,9 @@
 				<th>주소1</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_add1"
-							value="<%=member.getMem_add1()%>" />
+							value="${member.mem_add1 }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_add1")%></span>
+							<span class="error">${errors["mem_add1"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -122,9 +121,9 @@
 				<th>주소2</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_add2"
-							value="<%=member.getMem_add2()%>" />
+							value="${member.mem_add2 }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_add2")%></span>
+							<span class="error">${errors["mem_add2"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -132,9 +131,9 @@
 				<th>집전번</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_hometel"
-							value="<%=member.getMem_hometel()%>" />
+							value="${member.mem_hometel }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_hometel")%></span>
+							<span class="error">${errors["mem_hometel"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -142,9 +141,9 @@
 				<th>회사전번</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_comtel"
-							value="<%=member.getMem_comtel()%>" />
+							value="${member.mem_comtel }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_comtel")%></span>
+							<span class="error">${errors["mem_comtel"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -152,9 +151,9 @@
 				<th>휴대폰</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_hp"
-							value="<%=member.getMem_hp()%>" />
+							value="${member.mem_hp }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_hp")%></span>
+							<span class="error">${errors["mem_hp"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -162,9 +161,9 @@
 				<th>이메일</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_mail"
-							value="<%=member.getMem_mail()%>" />
+							value="${member.mem_mail }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_mail")%></span>
+							<span class="error">${errors["mem_mail"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -172,9 +171,9 @@
 				<th>직업</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_job"
-							value="<%=member.getMem_job()%>" />
+							value="${member.mem_job }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_job")%></span>
+							<span class="error">${errors["mem_job"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -182,9 +181,9 @@
 				<th>취미</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_like"
-							value="<%=member.getMem_like()%>" />
+							value="${member.mem_like }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_like")%></span>
+							<span class="error">${errors["mem_like"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -192,9 +191,9 @@
 				<th>기념일</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_memorial"
-							value="<%=member.getMem_memorial()%>" />
+							value="${member.mem_memorial }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_memorial")%></span>
+							<span class="error">${errors["mem_memorial"] }</span>
 						</div>
 					</div></td>
 			</tr>
@@ -202,16 +201,16 @@
 				<th>기념일자</th>
 				<td><div class="input-group">
 						<input class="form-control" type="text" name="mem_memorialday"
-							value="<%=member.getMem_memorialday()%>" />
+							value="${member.mem_memorialday }" />
 						<div class="input-group-text">
-							<span class="error"><%=errors.get("mem_memorialday")%></span>
+							<span class="error">${errors["mem_memorialday"] }</span>
 						</div>
 					</div></td>
 			</tr>
 			<tr>
-				<td colspan="2">
-				<input type="submit" value="등록" class=" btn btn-success" /> 
-				<input type="reset" value="취소"  class="btn btn-info" /></td>
+				<td colspan="2"><input type="submit" value="등록"
+					class=" btn btn-success" /> <input type="reset" value="취소"
+					class="btn btn-info" /></td>
 			</tr>
 		</table>
 	</form>
