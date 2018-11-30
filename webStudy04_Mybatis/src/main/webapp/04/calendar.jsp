@@ -95,7 +95,8 @@
 				"<option value='%s' %s>%s</option>",
 				tmp.toLanguageTag(),
 				tmp.equals(clientLocale)?"selected":"",
-				tmp.getDisplayLanguage(clientLocale)		
+				tmp.getDisplayLanguage(clientLocale)
+				tmp.getDisplayCountry()
 					));
 		}
 	%>

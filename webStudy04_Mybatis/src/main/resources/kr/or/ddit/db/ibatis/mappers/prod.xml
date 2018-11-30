@@ -99,7 +99,7 @@
 <!-- 			PK생성쿼리 -->
 			SELECT #prod_lgu#||LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PROD_ID),5)), 0) +1, 6, '0')
 			FROM PROD
-			WHERE PROD_LGU = #prod_lgu#;
+			WHERE PROD_LGU = #prod_lgu#
 		</selectKey>
 		INSERT INTO PROD(
 			  PROD_ID, PROD_NAME,PROD_LGU,

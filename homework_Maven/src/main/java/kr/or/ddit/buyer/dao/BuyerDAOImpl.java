@@ -15,8 +15,11 @@ public class BuyerDAOImpl implements IBuyerDAO {
 
 	@Override
 	public int insertBuyer(BuyerVO buyer) {
-		// TODO Auto-generated method stub
-		return 0;
+		try {
+				return (int) sqlMapClient.insert("Buyer.insertBuyer", buyer);
+			}catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 	}
 
 	@Override

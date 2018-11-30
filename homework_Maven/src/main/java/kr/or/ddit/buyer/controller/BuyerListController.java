@@ -26,7 +26,7 @@ public class BuyerListController implements ICommandHandler{
 		if (StringUtils.isNumeric(page)) {
 			currentPage = Integer.parseInt(page);
 		}
-		PagingInfoVO<BuyerVO> pagingVO = new PagingInfoVO<>(5,5);
+		PagingInfoVO<BuyerVO> pagingVO = new PagingInfoVO<>(5,2);
 		pagingVO.setCurrentPage(currentPage);
 //		3. B.L.L(basiness logic layer)와의 의종관계 형성
 		IBuyerService service = new BuyerServiceImpl();

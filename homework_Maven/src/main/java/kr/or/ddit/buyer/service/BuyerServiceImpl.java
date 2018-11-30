@@ -15,7 +15,20 @@ public class BuyerServiceImpl implements IBuyerService {
 
 	@Override
 	public ServiceResult createBuyer(BuyerVO buyer) {
-		return null;
+		ServiceResult result = null;
+		int rowCnt = buyerDAO.insertBuyer(buyer);
+		if (buyerDAO.selectBuyer(buyer.getBuyer_id()) == null) {
+			if (rowCnt > 0) {
+				result = ServiceResult.OK;
+			} else {
+				result = ServiceResult.FAILED;
+			}
+		}else {
+			result = ServiceResult.PKDUPLICATED;
+		}
+		
+		
+		return result;
 	}
 
 	@Override

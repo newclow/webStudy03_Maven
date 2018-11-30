@@ -17,12 +17,19 @@
 	src="<%=request.getContextPath() %>/js/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>	
+<script type="text/javascript">
+	$(function(){
+		$("#listBody").on("click","tr",function(){
+			var buyer_id = $(this).find("td:first").text();
+			location.href="<%=request.getContextPath() %>/buyer/buyerView.do?what="+buyer_id;
+		});
+	});
+</script>
 </head>
 <body>
 <h4>거래처 목록 </h4>
-<!-- <input type="button" class="btn btn-success" value="신규등록"  -->
-<%-- 	onclick="location.href='<%=request.getContextPath() %>/buyer/buyerInsert.do';" --%>
-<!-- /> -->
+<input type="button" class="btn btn-success" value="신규등록" 
+	onclick="location.href='<%=request.getContextPath() %>/buyer/buyerInsert.do';"/>
 <table class="table">
 	<thead  class="thead-dark">
 			<tr>
@@ -41,7 +48,7 @@
 <!-- 				<th>입금자명</th> -->
 			</tr>
 		</thead>
-		<tbody>
+		<tbody id="listBody">
 
 
 			<%-- 	<td><a href="<%=request.getContextPath()%>/buyer/buyerView.do?who=<%=buyer.getMem_id()%>"><%=buyer.getMem_name() %></a></td> --%>
@@ -51,6 +58,7 @@
 					for (BuyerVO buyer : buyerList) {
 			%>
 			<tr>
+				
 				<td><%=buyer.getBuyer_id()%></td>
 				<td><%=buyer.getBuyer_name()%></td>
 				<td><%=buyer.getBuyer_bank()%></td>

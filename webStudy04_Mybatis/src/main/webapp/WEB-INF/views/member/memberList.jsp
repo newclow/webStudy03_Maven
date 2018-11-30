@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
 	PagingInfoVO pagingVO = (PagingInfoVO) request.getAttribute("pagingVO");
 	List<MemberVO> memberList = pagingVO.getDataList();
@@ -51,9 +52,11 @@
 			<c:if test="${not empty memberList }">
 				<c:forEach items="${memberList }" var="member">
 					<tr>
+						<c:url value="/member/memberView.do" var="viewURL">
+							<c:param name="who" value="${member.mem_id }"/>
+						</c:url>
 						<td>${member.mem_id}</td>
-						<td><a
-							href="${pageContext.request.contextPath}/member/memberView.do?who=${member.mem_id}">${member.mem_name}</a></td>
+						<td><a href="${viewURL }">${member.mem_name}</a></td>
 						<td>${member.address}</td>
 						<td>${member.mem_hp}</td>
 						<td>${member.mem_mail}</td>

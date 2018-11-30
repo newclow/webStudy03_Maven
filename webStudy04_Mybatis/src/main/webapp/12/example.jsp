@@ -18,6 +18,22 @@
 </style>
 </head>
 <body>
+	<form>
+		주소입력 : <input type="url" name="siteUrl" value="" placeholder="https://www.naver.com">
+		<label><input type="checkbox" name="toSource" value="source" ${param.toSource eq 'source' ? "checked" : "" }/>소스로 보기</label>
+		<input type="submit" value="실행"/> 
+	</form>
+	<c:if test="${not empty param.siteUrl }">
+		<c:import url="${param.siteUrl }" var="site"/>
+		<div style="border : 1px solid red">
+			<c:out value="${site }" escapeXml="${param.toSource eq 'source' }"></c:out>
+		</div>
+	</c:if>
+
+	
+	
+	
+	
 <!-- 	2단부터 9단까지 구구단을 승수 1~9까지 table태그로 출력 -->
 <!-- 	첫번째 단은 파란색배경 -->
 <!-- 	네번째 단은 빨간색 배경 -->

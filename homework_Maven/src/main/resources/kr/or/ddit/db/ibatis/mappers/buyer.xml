@@ -27,4 +27,23 @@
 	<include refid="selectBuyerFrag"/>
 	where BUYER_ID=#BUYER_ID#
 </select>
+<insert id="insertBuyer" parameterClass="BuyerVO">
+	<selectKey resultClass="String" keyProperty="buyer_id">
+		SELECT #buyer_lgu#||LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BUYER_ID),1)),0 ) +1, 2, '0')
+		FROM BUYER
+		WHERE BUYER_LGU=#buyer_lgu#
+	</selectKey>
+	INSERT INTO BUYER(
+	    BUYER_ID, BUYER_NAME, BUYER_LGU, BUYER_BANK,
+	    BUYER_BANKNO, BUYER_BANKNAME, BUYER_ZIP,
+	    BUYER_ADD1, BUYER_ADD2, BUYER_COMTEL,
+	    BUYER_FAX, BUYER_MAIL, BUYER_CHARGER
+	) VALUES(
+		#buyer_ID#, #buyer_NAME#, #buyer_LGU#, #buyer_BANK#,
+	    #buyer_BANKNO#, #buyer_BANKNAME#, #buyer_ZIP#,
+	    #buyer_ADD1#, #buyer_ADD2#, #buyer_COMTEL#,
+	    #buyer_FAX#, #buyer_MAIL#, #buyer_CHARGER#
+	)
+</insert>
 </sqlMap>
+
