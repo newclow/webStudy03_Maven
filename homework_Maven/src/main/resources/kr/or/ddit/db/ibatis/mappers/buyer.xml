@@ -29,7 +29,7 @@
 </select>
 <insert id="insertBuyer" parameterClass="BuyerVO">
 	<selectKey resultClass="String" keyProperty="buyer_id">
-		SELECT #buyer_lgu#||LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BUYER_ID),1)),0 ) +1, 2, '0')
+		SELECT #buyer_lgu#||LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BUYER_ID),5)),0 ) +1, 2, '0')
 		FROM BUYER
 		WHERE BUYER_LGU=#buyer_lgu#
 	</selectKey>
@@ -39,11 +39,14 @@
 	    BUYER_ADD1, BUYER_ADD2, BUYER_COMTEL,
 	    BUYER_FAX, BUYER_MAIL, BUYER_CHARGER
 	) VALUES(
-		#buyer_ID#, #buyer_NAME#, #buyer_LGU#, #buyer_BANK#,
-	    #buyer_BANKNO#, #buyer_BANKNAME#, #buyer_ZIP#,
-	    #buyer_ADD1#, #buyer_ADD2#, #buyer_COMTEL#,
-	    #buyer_FAX#, #buyer_MAIL#, #buyer_CHARGER#
+		#buyer_id#, #buyer_name#, #buyer_lgu#, #buyer_bank#,
+	    #buyer_bankno#, #buyer_bankname#, #buyer_zip#,
+	    #buyer_add1#, #buyer_add2#, #buyer_comtel#,
+	    #buyer_fax#, #buyer_mail#, #buyer_charger#
 	)
 </insert>
+<update id="updateBuyer" parameterClass="BuyerVO">
+	
+</update>
 </sqlMap>
 

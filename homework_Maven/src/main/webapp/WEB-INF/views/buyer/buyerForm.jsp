@@ -1,5 +1,11 @@
+<%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.Map"%>
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	Map<String, String> lprodList = (Map<String, String>)request.getAttribute("lprodList");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +20,7 @@
 <link rel="stylesheet"
 	href="https://jqueryui.com/resources/demos/style.css">
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath }/js/jquery-3.3.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
@@ -24,13 +30,26 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	crossorigin="anonymous"></script>
+<script type="text/javascript">
+	$(function(){
+		<%
+			String message = (String)request.getAttribute("message");
+			if(StringUtils.isNotBlank(message)){
+				%>
+					alert("<%=message %>");
+				<%
+			}
+		%>
+	});
+</script>
+
 </head>
 <body>
 <h4>거래처 추가</h4>
 <jsp:useBean id="buyer" class="kr.or.ddit.vo.BuyerVO" scope="request"></jsp:useBean>
-<jsp:useBean id="errors" class="java.util.LinkedHashMap"></jsp:useBean>
+<jsp:useBean id="errors" class="java.util.HashMap"></jsp:useBean>
 <form action="" method="post">
-<table>
+<table class="table">
 		<tr>
 			<th>거래처명</th>
 			<td><input type="text" name="buyer_name"
@@ -38,8 +57,19 @@
 		</tr>
 		<tr>
 			<th>거래품목</th>
-			<td><input type="text" name="buyer_lgu"
-				VALUE="<%=buyer.getBuyer_lgu()%>" /><span class="error"><%=errors.get("buyer_lgu")%></span></td>
+			<td>
+				<select name="buyer_lgu">
+					<option>품목선택</option>
+					<%
+					 	for(Entry<String, String> lprod : lprodList.entrySet()){
+					 		%>
+					 			<option value="<%=lprod.getKey() %>"><%=lprod.getValue() %></option>
+					 		<%
+					 	}
+					%>
+				</select>
+				<span class="error"><%=errors.get("buyer_lgu")%></span>
+			</td>
 		</tr>
 		<tr>
 			<th>거래처은행</th>

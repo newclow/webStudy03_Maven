@@ -3,6 +3,7 @@ package kr.or.ddit.buyer.controller;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import kr.or.ddit.CommonException;
 import kr.or.ddit.ServiceResult;
+import kr.or.ddit.buyer.dao.IOtherDAO;
+import kr.or.ddit.buyer.dao.OtherDAOImpl;
 import kr.or.ddit.buyer.service.BuyerServiceImpl;
 import kr.or.ddit.buyer.service.IBuyerService;
 import kr.or.ddit.mvc.ICommandHandler;
@@ -24,6 +27,9 @@ public class BuyerInsertController implements ICommandHandler {
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		String method = req.getMethod();
+		IOtherDAO otherDAO = new OtherDAOImpl();
+		Map<String, String> lprodList = otherDAO.selectLprodList();
+		req.setAttribute("lprodList", lprodList);
 		if ("get".equalsIgnoreCase(method)) {
 			return "buyer/buyerForm";
 		} else if ("post".equalsIgnoreCase(method)) {
@@ -44,7 +50,7 @@ public class BuyerInsertController implements ICommandHandler {
 				ServiceResult result = service.createBuyer(buyer);
 				switch (result) {
 				case OK:
-					view = "redirect:buyer/buyerList.do?what="+buyer.getBuyer_id();
+					view = "redirect:/buyer/buyerList.do?what="+buyer.getBuyer_id();
 					break;
 				case FAILED:
 					view = "buyer/buyerForm";

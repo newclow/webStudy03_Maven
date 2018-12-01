@@ -18,4 +18,5 @@
 	</transactionManager>
 	
 	<sqlMap resource="kr/or/ddit/db/ibatis/mappers/buyer.xml"/> <!-- sql문을 사용하기위해 map연결 -->
+	<sqlMap resource="kr/or/ddit/db/ibatis/mappers/other.xml"/>
 </sqlMapConfig>

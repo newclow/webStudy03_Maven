@@ -2,6 +2,8 @@ package kr.or.ddit.buyer.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import kr.or.ddit.CommonException;
 import kr.or.ddit.ServiceResult;
 import kr.or.ddit.buyer.dao.BuyerDAOImpl;
@@ -16,9 +18,9 @@ public class BuyerServiceImpl implements IBuyerService {
 	@Override
 	public ServiceResult createBuyer(BuyerVO buyer) {
 		ServiceResult result = null;
-		int rowCnt = buyerDAO.insertBuyer(buyer);
 		if (buyerDAO.selectBuyer(buyer.getBuyer_id()) == null) {
-			if (rowCnt > 0) {
+			String str = buyerDAO.insertBuyer(buyer);
+			if (StringUtils.isNotBlank(str)) {
 				result = ServiceResult.OK;
 			} else {
 				result = ServiceResult.FAILED;
@@ -26,8 +28,6 @@ public class BuyerServiceImpl implements IBuyerService {
 		}else {
 			result = ServiceResult.PKDUPLICATED;
 		}
-		
-		
 		return result;
 	}
 

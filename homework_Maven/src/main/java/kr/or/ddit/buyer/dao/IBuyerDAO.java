@@ -25,7 +25,7 @@ public interface IBuyerDAO {
 	 * @param buyer
 	 * @return 성공하면 (>0)
 	 */
-	public int insertBuyer(BuyerVO buyer);
+	public String insertBuyer(BuyerVO buyer);
 	
 	/**
 	 * 페이징 처리된 거래처 목록 조회
