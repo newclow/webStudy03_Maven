@@ -66,7 +66,7 @@
 </head>
 <body>
 	
-	<form method="post">
+	<form method="post" enctype="multipart/form-data">
 	<input type="hidden" name="prod_id" value="${prod.prod_id }">
 	<table>
 		<tr>
@@ -141,11 +141,10 @@
 				</div></td>
 		</tr>
 		<tr>
-			<th>이미지경로</th>
+			<th>이미지</th>
 			<td><div class="input-group">
-					<input class="form-control" type="text" name="prod_img"
-						value="${prod.prod_img }" /><span
-						class="input-group-text error">${errors["prod_img"] }</span>
+					<input class="form-control" type="file" name="prod_image" />
+					<span class="input-group-text error">${errors["prod_img"] }</span>
 				</div></td>
 		</tr>
 		<tr>

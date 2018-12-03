@@ -42,7 +42,7 @@
 <%-- 	<jsp:useBean id="member" class="kr.or.ddit.vo.MemberVO" scope="request" /> --%>
 <%-- 	<jsp:useBean id="errors" class="java.util.LinkedHashMap" --%>
 <%-- 		scope="request"></jsp:useBean> --%>
-	<form method="post">
+	<form method="post" enctype="mutipart/form-data">
 		<table>
 			<tr>
 				<th>회원아이디</th>

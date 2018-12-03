@@ -71,7 +71,9 @@
 		</tr>
 		<tr>
 			<th>이미지경로</th>
-			<td>${prod.prod_img }</td>
+			<td>
+				<img src='<c:url value="/prodImages/${prod.prod_img }"/>' />
+			</td>
 		</tr>
 		<tr>
 			<th>재고량</th>
