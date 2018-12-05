@@ -34,6 +34,18 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	crossorigin="anonymous"></script>
+<style type="text/css">
+	#imageArea{
+		float: right;
+		width: 200px;
+		height: 300px;
+		border : 1px solid black;
+	}
+	#imageArea>img{
+		width : 100%;
+		height : 100%;
+	}
+</style>
 <script type="text/javascript">
 	$(function(){
 		<c:if test="${not empty message }">
@@ -54,6 +66,26 @@
 				}
 			}
 		});	
+		var imageArea = $("#imageArea");
+		$('[name="mem_image"]').on("change", function(){
+			var files = $(this).prop("files");
+			if (!files) {
+				return;
+			}
+			for(var idx = 0; idx < files.length; idx++){
+// 				console.log(files[idx])
+				var reader = new FileReader();
+				reader.onloadend = function(event){
+// 					console.log(event.target.result);
+					var imgTag = new Image();
+						imgTag.src = event.target.result;
+						imageArea.html(imgTag);
+				}
+				reader.readAsDataURL(files[idx]);
+			}
+		});
+		
+		
 	});
 </script>
 </head>
@@ -71,7 +103,7 @@
  	<input type="hidden" name="mem_id" value="${member.mem_id }"/>
  	<input type="hidden" name="mem_pass" />
 	</form>
-<form action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
+<form action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post" enctype="multipart/form-data">
 </c:if>
 <h4>회원정보 상세조회 및 수정폼</h4>
 	<table>
@@ -98,6 +130,17 @@
 							value="${member.mem_name }" />
 							<span class="error input-group-text">${errors["mem_name"] }</span>
 					</div></td>
+			</tr>
+			<tr>
+				<th>이미지</th>
+				<td>
+					<input type="file" name="mem_image" accept="image/*"/>
+					<div id="imageArea">
+					<c:if test="${not empty member.mem_img }">
+					<img src="data:image/*;base64,${member.mem_imgToBase64 }" />
+					</c:if>
+					</div>
+				</td>
 			</tr>
 			<tr>
 				<th>주민번호</th>

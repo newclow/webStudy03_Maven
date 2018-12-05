@@ -29,9 +29,9 @@ public class FileUploadCheckFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		//요청필터링
-		String contentType = request.getContentType();
-		if (contentType != null && contentType.startsWith("multipart/")) {
-			HttpServletRequest req = (HttpServletRequest)request;
+		String contentType = request.getContentType(); //contentType을 꺼낸다
+		if (contentType != null && contentType.startsWith("multipart/")) { //검증을해서 multipart인지 보고
+			HttpServletRequest req = (HttpServletRequest)request; //요청객체를 받았
 			int sizeThreshold = 10240;
 			File repository = new File("d:/temp");
 			FileUploadRequestWrapper wrapper = new FileUploadRequestWrapper(req, sizeThreshold, repository);

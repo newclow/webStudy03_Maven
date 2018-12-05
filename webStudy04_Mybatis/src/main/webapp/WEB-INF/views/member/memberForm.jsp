@@ -75,6 +75,12 @@
 					</div></td>
 			</tr>
 			<tr>
+				<th>회원이미지</th>
+				<td>
+					<input class="form-control" type="file" name="mem_img" value="${member.mem_img }" />
+				</td>
+			</tr>
+			<tr>
 				<th>주민번호</th>
 				<td><div class="input-group">
 						<input class="form-control col-md-3" type="text" name="mem_regno1"

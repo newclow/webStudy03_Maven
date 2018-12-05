@@ -13,10 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 
 import kr.or.ddit.CommonException;
 import kr.or.ddit.ServiceResult;
+import kr.or.ddit.filter.wrapper.FileUploadRequestWrapper;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.ICommandHandler;
@@ -27,22 +29,21 @@ public class MemberInsertController implements ICommandHandler {
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		String method = req.getMethod();
 		String view = null;
-		if("get".equalsIgnoreCase(method)) {
+		if ("get".equalsIgnoreCase(method)) {
 			view = doGet(req, resp);
-		}else if("post".equalsIgnoreCase(method)) {
+		} else if ("post".equalsIgnoreCase(method)) {
 			view = doPost(req, resp);
-		}else {
+		} else {
 			resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 		}
 		return view;
 	}
-	
+
 	protected String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String view = "member/memberForm";
 		return view;
 	}
-	
-	 
+
 	protected String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MemberVO member = new MemberVO();
 		req.setAttribute("member", member);
@@ -58,6 +59,12 @@ public class MemberInsertController implements ICommandHandler {
 		req.setAttribute("errors", errors);
 		boolean valid = validate(member, errors);
 		if (valid) {
+			if (req instanceof FileUploadRequestWrapper) {
+				FileItem fileItem = ((FileUploadRequestWrapper) req).getFileItem("mem_image");
+				if (fileItem != null) {
+					member.setMem_img(fileItem.get());
+				}
+			}
 			IMemberService service = new MemberServiceImpl();
 			ServiceResult result = service.registMember(member);
 			switch (result) {
@@ -77,10 +84,10 @@ public class MemberInsertController implements ICommandHandler {
 		} else {
 			goPage = "member/memberForm";
 		}
-		
+
 		return goPage;
 	}
-	
+
 	private boolean validate(MemberVO member, Map<String, String> errors) {
 		boolean valid = true;
 		if (StringUtils.isBlank(member.getMem_id())) {
@@ -127,13 +134,13 @@ public class MemberInsertController implements ICommandHandler {
 			valid = false;
 			errors.put("mem_mail", "이메일 누락");
 		}
-		if(StringUtils.isNotBlank(member.getMem_bir())){
+		if (StringUtils.isNotBlank(member.getMem_bir())) {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			// formatting : 특정 타입의 데이터를 일정 형식의 문자열로 변환.
 			// parsing : 일정한 형식의 문자열을 특정 타입의 데이터로 변환.
-			try{
+			try {
 				formatter.parse(member.getMem_bir());
-			}catch(ParseException e){
+			} catch (ParseException e) {
 				valid = false;
 				errors.put("mem_bir", "날짜 형식 확인");
 			}
@@ -141,13 +148,3 @@ public class MemberInsertController implements ICommandHandler {
 		return valid;
 	}
 }
-
-
-
-
-
-
-
-
-
-

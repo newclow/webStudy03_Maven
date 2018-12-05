@@ -63,7 +63,12 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 							String partname = item.getFieldName();
 							if (item.isFormField()) {
 								//5. 일반 문자열 기반의 FileItem에 대한 처리와 
-								String parameterValue = item.getString(req.getCharacterEncoding());
+								String parameterValue = null;
+								if (req.getCharacterEncoding() == null) {
+									parameterValue = item.getString(req.getCharacterEncoding());
+								} else {
+									parameterValue = item.getString();
+								}
 								String[] alreadyValues = parameterMap.get(partname);
 								String[] values = null;
 								if (alreadyValues == null) {
@@ -166,7 +171,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 		};
 	}
 	
-	public void deleteAllTempFile(){
+	public void deleteAllTempFile(){ //임시 저장폴더를 관리하며 업로드가 끝난후에는 삭제한다.
 		for ( Entry<String, List<FileItem>> entry : fileItemMap.entrySet()) {
 			for ( FileItem tmp : entry.getValue()) {
 				tmp.delete();

@@ -76,7 +76,6 @@ public class FrontController extends HttpServlet {
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
 		String uri = req.getRequestURI(); //uri를 따온다
 //		/member/memberList.do
 		int cpLength = req.getContextPath().length(); //자를부분을 가져오고

@@ -62,9 +62,9 @@ public class ProdInsertController implements ICommandHandler {
 			req.setAttribute("errors", errors);
 			boolean valid = validate(prod, errors);
 			if (valid) {
-				if (req instanceof FileUploadRequestWrapper) {
+				if (req instanceof FileUploadRequestWrapper) { //랩퍼인지 확인
 					String prodImagesUrl = "/prodImages";
-					String prodImagesPath = req.getServletContext().getRealPath(prodImagesUrl);
+					String prodImagesPath = req.getServletContext().getRealPath(prodImagesUrl); 
 					File prodImagesFolder = new File(prodImagesPath);
 					FileItem fileItem = ((FileUploadRequestWrapper) req).getFileItem("prod_image");
 					if (fileItem != null) {
