@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="Buyer">
+	<sql id="searchFrag">
+		<dynamic prepend="WHERE"> <!-- 하나라도 만족하는게 있으면 조건을 만들겠다라는 의미 -->
+			<isNotEmpty property="searchWord">
+				<isEqual property="searchType" compareValue="name">
+					BUYER_NAME LIKE '%' ||#searchWord#||'%'
+				</isEqual>
+				<isEqual property="searchType" compareValue="add">
+					BUYER_ADD1 LIKE '%' ||#searchWord#||'%'
+				</isEqual>
+				<isEqual property="searchType" compareValue="all">
+					BUYER_NAME LIKE '%' ||#searchWord#||'%'
+					OR
+					BUYER_ADD1 LIKE '%' ||#searchWord#||'%'
+				</isEqual>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
 <sql id="selectBuyerFrag">
 	SELECT
 	    BUYER_ID, BUYER_NAME, BUYER_LGU, BUYER_BANK,
@@ -13,6 +30,7 @@
 </sql>
 <select id="selectTotalRecord" resultClass="long" parameterClass="pagingVO">
 	SELECT COUNT(*) FROM BUYER
+	<include refid="Buyer.searchFrag"/>
 </select>
 <select id="selectBuyerList" resultClass="buyerVO" parameterClass="pagingVO">
 	SELECT A.*
@@ -20,11 +38,11 @@
 		SELECT ROWNUM RNUM, BUYER_ID, BUYER_NAME, BUYER_BANK,
 		    BUYER_BANKNO, BUYER_BANKNAME
 		FROM BUYER
+		<include refid="Buyer.searchFrag"/>
 	) A
 	<![CDATA[WHERE RNUM >=#startRow# AND RNUM <= #endRow#]]>
 </select>
 <select id="selectBuyer" resultClass="buyerVO" parameterClass="String">
-	<include refid="selectBuyerFrag"/>
 	where BUYER_ID=#BUYER_ID#
 </select>
 <insert id="insertBuyer" parameterClass="BuyerVO">
@@ -46,7 +64,21 @@
 	)
 </insert>
 <update id="updateBuyer" parameterClass="BuyerVO">
-	
+	UPDATE BUYER
+    SET
+        BUYER_NAME=#buyer_name#, 
+        BUYER_LGU=#buyer_lgu#, 
+        BUYER_BANK=#buyer_bank#,
+	    BUYER_BANKNO=#buyer_bankno#, 
+	    BUYER_BANKNAME=#buyer_bankname#,
+	    BUYER_ZIP=#buyer_zip#,
+	    BUYER_ADD1=#buyer_add1#, 
+	    BUYER_ADD2=#buyer_add2#, 
+	    BUYER_COMTEL=#buyer_comtel#,
+	    BUYER_FAX=#buyer_fax#, 
+	    BUYER_MAIL=#buyer_mail#, 
+	    BUYER_CHARGER=#buyer_charger#
+	WHERE BUYER_ID=#buyer_id#
 </update>
 </sqlMap>
 

@@ -50,10 +50,10 @@ public interface IBuyerDAO {
 	
 	/**
 	 * 거래처 정보를 수정
-	 * @param buy_id
+	 * @param buyer
 	 * @return 성공하면 (>0)
 	 */
-	public int updateBuyer(String buy_id);
+	public int updateBuyer(BuyerVO buyer);
 	
 	/**
 	 * 거래처를 중단(그러나 삭제는 하지 않는다 내역에서 거래를 중단했다고 표시(즉 update))

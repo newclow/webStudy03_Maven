@@ -1,3 +1,6 @@
+<%@page import="java.util.Objects"%>
+<%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.Map"%>
 <%@page import="kr.or.ddit.vo.PagingInfoVO"%>
 <%@page import="kr.or.ddit.vo.BuyerVO"%>
 <%@page import="java.util.List"%>
@@ -89,6 +92,18 @@
 				<nav aria-label="Page navigation example">
 				 	<%=pagingVO.getPagingHTML() %> 
 				</nav>			
+				<form action="searchForm">
+					<select name="searchType">
+						<option value="all" selected="selected">전체</option>
+						<option value="name">거래처명</option>
+						<option value="add">주소</option>
+						<script type="text/javascript">
+							document.searchForm.searchType.value = "<%=Objects.toString(pagingVO.getSearchType(), "all")  %>";
+						</script>
+						<input type="text" name="searchWord" value="<%=Objects.toString(pagingVO.getSearchWord(), "") %>">
+						<input type="submit" name="검색">
+					</select>
+				</form>
 			</td>
 		</tr>
 	</tfoot>

@@ -48,7 +48,14 @@ public class BuyerServiceImpl implements IBuyerService {
 
 	@Override
 	public ServiceResult modifiedBuyer(BuyerVO buyer) {
-		return null;
+		ServiceResult result = null;
+		int rowCnt = buyerDAO.updateBuyer(buyer);
+		if (rowCnt > 0) {
+			result = ServiceResult.OK;
+		}else {
+			result = ServiceResult.FAILED;
+		}	
+		return result;
 	}
 
 	@Override

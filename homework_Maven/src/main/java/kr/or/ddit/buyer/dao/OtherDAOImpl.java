@@ -1,11 +1,13 @@
 package kr.or.ddit.buyer.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.db.ibstis.CustomSqlMapClientBuilder;
+import kr.or.ddit.vo.BuyerVO;
 
 public class OtherDAOImpl implements IOtherDAO {
 	
@@ -19,5 +21,6 @@ public class OtherDAOImpl implements IOtherDAO {
 			throw new RuntimeException(e);
 		}
 	}
+
 
 }

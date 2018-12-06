@@ -33,6 +33,10 @@ public class PagingInfoVO<T> {
 	private long startRow;
 	private long endRow;
 	private List<T> dataList;
+	private T searchVO;
+	private String searchWord;
+	private String searchType;
+	
 	
 	public void setTotalRecord(long totalRecord) {
 		this.totalRecord = totalRecord;

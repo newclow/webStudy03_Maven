@@ -11,4 +11,5 @@ public interface IOtherDAO {
 	 * @return key : 상품코드, value : 상품명
 	 */
 	public Map<String, String> selectLprodList();
+	
 }

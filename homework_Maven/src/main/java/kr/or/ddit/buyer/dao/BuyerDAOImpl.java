@@ -50,9 +50,12 @@ public class BuyerDAOImpl implements IBuyerDAO {
 	}
 
 	@Override
-	public int updateBuyer(String buy_id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateBuyer(BuyerVO buyer) {
+		try {
+				return sqlMapClient.update("Buyer.updateBuyer", buyer);
+			}catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 	}
 
 	@Override
