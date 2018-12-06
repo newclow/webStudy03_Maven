@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class ReplyVO implements Serializable {
 	private Long rep_no;
 	private Long bo_no;
-	private String rep_name;
+	private String rep_writer;
 	private String rep_ip;
 	private String rep_pass;
 	private String rep_content;

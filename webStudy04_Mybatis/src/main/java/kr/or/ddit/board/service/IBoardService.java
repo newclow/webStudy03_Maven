@@ -47,7 +47,7 @@ public interface IBoardService {
 	 * @param bo_no
 	 * @return 없다면 BoardException(unchecked exception)발생
  	 */
-	public BoardVO retriveBoard(Long bo_no);
+	public BoardVO retriveBoard(long bo_no);
 	
 	/**
 	 * 글 수정
