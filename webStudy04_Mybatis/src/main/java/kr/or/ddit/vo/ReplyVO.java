@@ -10,6 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Alias("replyVO")
 public class ReplyVO implements Serializable {
+	
+	public ReplyVO(Long rep_no, String rep_pass) {
+		super();
+		this.rep_no = rep_no;
+		this.rep_pass = rep_pass;
+	}
 	private Long rep_no;
 	private Long bo_no;
 	private String rep_writer;

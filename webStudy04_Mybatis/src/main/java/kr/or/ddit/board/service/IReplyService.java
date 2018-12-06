@@ -41,6 +41,13 @@ public interface IReplyService {
 	public List<ReplyVO> retriveReplyList(PagingInfoVO<ReplyVO> pagingVO);
 	
 	/**
+	 * 댓글 조회
+	 * @param rep_no
+	 * @return
+	 */
+	public ReplyVO retriveReply(long rep_no);
+	
+	/**
 	 * 댓글 수정
 	 * @param reply
 	 * @return BoardException, INVALIDPASSWORD, OK, FAILED

@@ -14,8 +14,14 @@ public class ReplyServiceImpl implements IReplyService {
 	
 	@Override
 	public ServiceResult createReply(ReplyVO reply) {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result = null;
+		int rowCnt = replyDAO.insertReply(reply);
+		if (rowCnt > 0) {
+			result = ServiceResult.OK;
+		}else {
+			result = ServiceResult.FAILED;
+		}
+		return result;
 	}
 
 	@Override
@@ -36,8 +42,24 @@ public class ReplyServiceImpl implements IReplyService {
 
 	@Override
 	public ServiceResult deleteReply(ReplyVO reply) {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result = null;
+		ReplyVO check = retriveReply(reply.getRep_no());
+		if (check.getRep_pass().equals(reply.getRep_pass())) {
+			int rowCnt = replyDAO.deleteReply(reply.getRep_no());
+			if (rowCnt > 0) {
+				result = ServiceResult.OK;
+			} else {
+				result = ServiceResult.FAILED;
+			}
+		}else {
+			result = ServiceResult.INVALIDPASSWORD;
+		}
+		return result;
+	}
+
+	@Override
+	public ReplyVO retriveReply(long rep_no) {
+		return replyDAO.selectReply(rep_no);
 	}
 
 }

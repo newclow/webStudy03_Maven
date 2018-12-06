@@ -11,42 +11,12 @@
 	src="${pageContext.request.contextPath }/js/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script type="text/javascript" src="<c:url value='/js/replyProcess.js' />"></script>
 <script type="text/javascript">
-	function paging(page){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/reply/replyList.do",
-			data:{
-				bo_no:${board.bo_no},
-				page:page
-			},
-			dataType:"json",
-			success:function(resp){
-				var html = "";
-				if(resp.dataList){
-					$.each(resp.dataList, function(idx, reply){
-						html += "<tr>";
-						html += "<td>"+reply.rep_writer+"</td>";
-						html += "<td>"+reply.rep_ip+"</td>";
-						html += "<td>"+reply.rep_content+"</td>";
-						html += "<td>"+reply.rep_date+"</td>";
-						html += "</tr>";
-					});
-				}else{
-					html += "<tr><td colspan='4'>데이터 없음.</td></tr>";
-				}
-				pagingArea.html(resp.pagingHTML);	
-				listBody.html(html);
-			},
-			error:function(resp){
-				console.log(resp.status);
-			}
-		});
+	$.getContextPath = function(){
+		return "${pageContext.request.contextPath}";
 	}
-	$(function(){
-		pagingArea = $("#pagingArea");
-		listBody = $("#listBody");
- 		paging(1);
-	});
 </script>
 </head>
 <body>
@@ -88,6 +58,27 @@
 			<td>${board.bo_rcmd}</td>
 		</tr>
 	</table>
+	<form action="${pageContext.request.contextPath}/reply/replyInsert.do" name="replyForm">
+	<input type="hidden" name="rep_no" />
+	<input type="hidden" value="${board.bo_no }" name="bo_no" />
+	<input type="hidden" value="${pageContext.request.remoteAddr}" name="rep_ip" />
+	<table >
+		<tr >
+			<td>
+				작성자<input type="text" name="rep_writer" />
+			</td>
+			<td>
+				비번<input type="password" name="rep_pass" />
+			</td>
+			<td>
+				내용<input type="text" name="rep_content" />
+			</td>
+			<td>
+				<input type="submit" value="댓글쓰기"/>
+			</td>
+		</tr>
+	</table>
+	</form>
 	<table>
 	<thead>
 		<tr>
@@ -98,26 +89,46 @@
 		</tr>
 	</thead>
 	<tbody id="listBody">
-		<c:set var="replyList" value='${board.replyList }' />
-	   	<c:forEach items="${replyList }" var="reply">
-	   		<tr>
-	   			<td>${reply.rep_writer }</td>
-	   			<td>${reply.rep_ip }</td>
-	   			<td>${reply.rep_content }</td>
-	   			<td>${reply.rep_date }</td>
-	   		</tr>
-	   	</c:forEach>
 	</tbody>
 	<tfoot>
 		<tr>
 			<td colspan="4">
 				<nav aria-label="Page navigation" id="pagingArea">
-					${pagingVO.pagingHTML }
 				</nav>
 			</td>
 		</tr>
-	</tfoot>		
+	</tfoot>
 	</table>
+<!-- Modal -->
+<div class="modal fade" id="replyDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<form onsubmit="return false;" id="modalForm">
+      		<input type="hidden" id="bo_no" value="${board.bo_no }" />
+      		<input type="hidden" id="rep_no" />
+			비밀번호 : <input type="text" id="rep_pass" />
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="modalBtn">삭제</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	function paging(page){
+		pagingReply(page, ${board.bo_no});
+	}
+	paging(1);
+</script>
 </body>
 </html>
 

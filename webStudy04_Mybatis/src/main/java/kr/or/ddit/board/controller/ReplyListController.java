@@ -36,8 +36,8 @@ public class ReplyListController implements ICommandHandler {
 		pagingVO.setCurrentPage(currentPage); //pagingVO의 값중 현재페이지를 set한다
 		IReplyService replyService = new ReplyServiceImpl(); 
 		ReplyVO searchVO = new ReplyVO(); //replyVO를 객체화한다
-		
-		
+		searchVO.setBo_no(Long.parseLong(bo_no));
+		pagingVO.setSearchVO(searchVO);
 		long totalRecord = replyService.retriveReplyCount(pagingVO); //현재페이지가 set된 pagingVO를 넣어 댓글갯수를 구한다
 		pagingVO.setTotalRecord(totalRecord); //총 댓글 갯수를 pagingVO에 넣어 연산하여 페이징처리하게한다.
 		List<ReplyVO> replyList = replyService.retriveReplyList(pagingVO); //댓글목록 가져와

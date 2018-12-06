@@ -15,8 +15,14 @@ public class ReplyDAOImpl implements IReplyDAO {
 	
 	@Override
 	public int insertReply(ReplyVO reply) {
-		// TODO Auto-generated method stub
-		return 0;
+		try(
+				SqlSession session = sqlSessionFactory.openSession();
+				){
+			IReplyDAO mapper = session.getMapper(IReplyDAO.class);
+			int row = mapper.insertReply(reply);
+			session.commit();
+			return row;
+		}
 	}
 
 	@Override
@@ -41,8 +47,12 @@ public class ReplyDAOImpl implements IReplyDAO {
 
 	@Override
 	public ReplyVO selectReply(long rep_no) {
-		// TODO Auto-generated method stub
-		return null;
+		try(
+				SqlSession session = sqlSessionFactory.openSession();
+				){
+			IReplyDAO mapper = session.getMapper(IReplyDAO.class);
+			return mapper.selectReply(rep_no);
+		}
 	}
 
 	@Override
@@ -53,8 +63,14 @@ public class ReplyDAOImpl implements IReplyDAO {
 
 	@Override
 	public int deleteReply(long rep_no) {
-		// TODO Auto-generated method stub
-		return 0;
+		try(
+				SqlSession session = sqlSessionFactory.openSession();
+				){
+			IReplyDAO mapper = session.getMapper(IReplyDAO.class);
+			int row = mapper.deleteReply(rep_no);
+			session.commit();
+			return row;
+		}
 	}
 
 }
