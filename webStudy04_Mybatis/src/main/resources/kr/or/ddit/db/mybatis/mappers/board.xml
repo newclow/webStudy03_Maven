@@ -45,18 +45,25 @@
 	</select>
 	<resultMap type="boardVO" id="boardMap" autoMapping="true">
 		<id property="bo_no" column="BO_NO"/>
-		
-		<collection property="replyList" autoMapping="true" javaType="java.util.List" ofType="replyVO"/>
+		<!-- pds has many 추가(collection) -->
+<!-- 		<collection property="replyList" autoMapping="true" javaType="java.util.List" ofType="replyVO"/> -->
 	</resultMap>
 	
 	<select id="selectBoard" parameterType="long" resultMap="boardMap">
 		        SELECT 
-				     BO_NO, BO_WRITER, BO_PASS,
-		   			 BO_IP, BO_MAIL, BO_TITLE,
-		   			 BO_CONTENT, TO_CHAR(BO_DATE, 'YYYY-MM-DD HH24:MI:SS') BO_DATE,
-		   			 BO_HIT, BO_RCMD
-				FROM BOARD
-				WHERE BO_NO= #{bo_no}
+				     A.BO_NO, A.BO_WRITER, A.BO_PASS,
+		   			 A.BO_IP, A.BO_MAIL, A.BO_TITLE,
+		   			 A.BO_CONTENT, TO_CHAR(A.BO_DATE, 'YYYY-MM-DD HH24:MI:SS') BO_DATE,
+		   			 A.BO_HIT, A.BO_RCMD,
+					B.PDS_NO,
+					B.PDS_FILENAME,
+					B.PDS_SAVENAME,
+					B.PDS_MIME,
+					B.PDS_SIZE,
+					B.PDS_FANCYSIZE
+		   		<!-- pds join -->
+				FROM BOARD A LEFT OUTER JOIN PDS B ON (A.BO_NO = B.BO_NO)
+				WHERE A.BO_NO= #{bo_no}
 	</select>
 	<update id="incrementHit" parameterType="long" >
 		UPDATE BOARD
@@ -64,4 +71,29 @@
 			BO_HIT = BO_HIT +1
 		WHERE BO_NO = #{bo_no}
 	</update>
+	<insert id="insertBoard" parameterType="boardVO">
+		INSERT INTO BOARD (
+		    BO_NO,
+		    BO_WRITER,
+		    BO_PASS,
+		    BO_IP,
+		    BO_MAIL,
+		    BO_TITLE,
+		    BO_CONTENT,
+		    BO_DATE,
+		    BO_HIT,
+		    BO_RCMD
+		) VALUES (
+		    board_seq.nextval,
+		    #{bo_writer},
+		    #{bo_pass},
+		    #{bo_ip},
+		    #{bo_mail},
+		    #{bo_title},
+		    #{bo_content},
+		    SYSDATE,
+		    0,
+		    0
+		)
+	</insert>
 </mapper>

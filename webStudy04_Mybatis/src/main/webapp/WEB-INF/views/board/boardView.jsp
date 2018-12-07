@@ -42,6 +42,18 @@
 			<td>${board.bo_title}</td>
 		</tr>
 		<tr>
+			<th>첨부파일</th>
+			<td>
+				<c:forEach items="${board.pdsList }" var="pds" varStatus="vs">
+					<c:url value="/board/download.do" var="downloadURL">
+						<c:param name="what" value="${pds.pds_no }" />
+					</c:url>
+					<a href="${downloadURL }">${pds.pds_filename }</a>
+					<c:if test="${not vs.last }">&nbsp;|&nbsp;</c:if>
+				</c:forEach>
+			</td>
+		</tr>
+		<tr>
 			<th>내용</th>
 			<td>${board.bo_content}</td>
 		</tr>
@@ -58,26 +70,25 @@
 			<td>${board.bo_rcmd}</td>
 		</tr>
 	</table>
-	<form action="${pageContext.request.contextPath}/reply/replyInsert.do" name="replyForm">
-	<input type="hidden" name="rep_no" />
-	<input type="hidden" value="${board.bo_no }" name="bo_no" />
-	<input type="hidden" value="${pageContext.request.remoteAddr}" name="rep_ip" />
-	<table >
-		<tr >
-			<td>
-				작성자<input type="text" name="rep_writer" />
-			</td>
-			<td>
-				비번<input type="password" name="rep_pass" />
-			</td>
-			<td>
-				내용<input type="text" name="rep_content" />
-			</td>
-			<td>
-				<input type="submit" value="댓글쓰기"/>
-			</td>
-		</tr>
-	</table>
+	<form action="${pageContext.request.contextPath}/reply/replyInsert.do"
+		name="replyForm">
+		<input type="hidden" name="rep_no" /> <input type="hidden"
+			value="${board.bo_no }" name="bo_no" /> <input type="hidden"
+			value="${pageContext.request.remoteAddr}" name="rep_ip" />
+		<table>
+			<tr>
+				<td>작성자<input type="text" name="rep_writer" /> 비번<input
+					type="password" name="rep_pass" />
+				</td>
+			</tr>
+			<tr>
+				<td>내용<textarea name="rep_content" rows="3" cols="100"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="댓글쓰기" /></td>
+			</tr>
+		</table>
 	</form>
 	<table>
 	<thead>

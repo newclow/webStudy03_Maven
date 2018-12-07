@@ -44,6 +44,7 @@
 				$('[name="page"]').val("");
 			},
 		 });
+		 
 		 <c:url var="boardView" value="/board/boardView.do"/>
 		 $("#bodylist").on("click", "tr",function(){
 			var bo_no = $(this).find("td:nth-child(2)").text();
@@ -105,6 +106,7 @@
 				<input type="text" name="searchWord" value="${pagingVO.searchWord }"/>
 				<input type="submit" value="검색" />
 				</form>
+				<input type="button" value="글쓰기" onclick="location.href='${pageContext.request.contextPath}/board/boardInsert.do';" />
 			</td>
 		</tr>
 	</tfoot>
