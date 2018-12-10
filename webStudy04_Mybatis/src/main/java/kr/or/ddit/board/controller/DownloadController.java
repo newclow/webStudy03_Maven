@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,13 @@ public class DownloadController implements ICommandHandler {
 //	    FileInputStream fis = new FileInputStream(fileToDownload);
 		
 		resp.setContentType("application/octet-stream"); //응답 타입을 8비트로 지정
+		String agent = req.getHeader("User-Agent"); //header에 있는 유저에이전트를 가져옴
+		if(StringUtils.containsIgnoreCase(agent, "msie") 
+				|| StringUtils.containsIgnoreCase(agent, "trident")) { //
+			fileName = URLEncoder.encode(fileName, "UTF-8");
+		} else {
+			fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+		}
 		fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1"); //fileName의 바이트의 인코딩지정
 		resp.setHeader("Content-Disposition","attachment;filename=\""+fileName+"\"");//파일이름에 관한 것, 띄어쓰기도 포함
 		resp.setHeader("Content-Length", pds.getPds_size()+""); //파일 사이즈를string 변환하여 지정

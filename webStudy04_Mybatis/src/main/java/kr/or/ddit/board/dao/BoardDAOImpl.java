@@ -65,20 +65,33 @@ public class BoardDAOImpl implements IBoardDAO {
 
 	@Override
 	public void incrementRcmd(long bo_no) {
-		// TODO Auto-generated method stub
-
+		try(
+				SqlSession session = sqlSessionFactory.openSession();
+				){
+			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
+			mapper.incrementRcmd(bo_no);
+			session.commit();
+		}
 	}
 
 	@Override
-	public int updateBoard(BoardVO board) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateBoard(BoardVO board, SqlSession session) {
+//			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
+//			int row = mapper.updateBoard(board);
+//			session.commit();
+		return session.update("kr.or.ddit.board.dao.IBoardDAO.updateBoard", board);
 	}
 
 	@Override
 	public int deleteBoard(long bo_no) {
-		// TODO Auto-generated method stub
-		return 0;
+		try(
+				SqlSession session = sqlSessionFactory.openSession();
+					){
+				IBoardDAO mapper = session.getMapper(IBoardDAO.class);
+				int row = mapper.deleteBoard(bo_no);
+				session.commit();
+				return row;
+			}
 	}
 
 }

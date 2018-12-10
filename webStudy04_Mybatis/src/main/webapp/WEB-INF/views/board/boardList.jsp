@@ -14,6 +14,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
 <script src="http://malsup.github.com/jquery.form.js"></script> 
 <script type="text/javascript">
+
 	function ${pagingVO.funcName}(page){
 		document.searchForm.page.value = page;
 		document.searchForm.submit();
@@ -21,7 +22,33 @@
 	$(function(){
 	  	var navTag = $('#navtag');
 		var bodyTag = $('#bodylist');
-		 $('[name="searchForm"]').ajaxForm({ 
+		var searchForm = $('[name="searchForm"]');
+		
+		$(window).on("popstate", function(event){
+			console.log(event);
+			if (event.originalEvent.state) {
+				var pagingVO = event.originalEvent.state;
+	 			var body="";
+	 			var boardList = pagingVO.dataList;
+	 			if(boardList){
+	 				$.each(boardList,function(i, board){
+	 					body+="<tr><td>"+board.rnum+"</td>";
+	 					body+="<td>"+board.bo_no+"</td>";
+	 					body+="<td>"+board.bo_title+"</td>";
+	 					body+="<td>"+board.bo_writer+"</td>";
+	 					body+="<td>"+board.bo_date+"</td>";
+	 					body+="<td>"+board.bo_hit+"</td>";
+	 					body+="<td>"+board.bo_rcmd+"</td></tr>";
+	 				})
+	 			}else{
+	 				body+="<tr><td colspan='7'>데이터없음</td></tr>";
+	 			}
+	 			navTag.html(pagingVO.pagingHTML);
+	 			bodyTag.html(body);
+			}
+		});
+		
+		searchForm.ajaxForm({ 
 		       dataType:  'json', 
 		       success:  function (data){
 				var body="";
@@ -41,6 +68,10 @@
 				}
 				navTag.html(data.pagingHTML);
 				bodyTag.html(body);
+				//비동기처리성공 -> push state on history(state, title, url)
+				var pageNum = searchForm.find('[name="page"]').val();
+				var queryString = searchForm.serialize();
+				history.pushState(data, pageNum+" 페이지", "?"+queryString);
 				$('[name="page"]').val("");
 			},
 		 });

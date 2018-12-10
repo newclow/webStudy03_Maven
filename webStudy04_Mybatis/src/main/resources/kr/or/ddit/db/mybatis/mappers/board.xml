@@ -45,8 +45,8 @@
 	</select>
 	<resultMap type="boardVO" id="boardMap" autoMapping="true">
 		<id property="bo_no" column="BO_NO"/>
-		<!-- pds has many 추가(collection) -->
 <!-- 		<collection property="replyList" autoMapping="true" javaType="java.util.List" ofType="replyVO"/> -->
+		<collection property="pdsList" autoMapping="true" javaType="java.util.List" ofType="pdsVO"/>
 	</resultMap>
 	
 	<select id="selectBoard" parameterType="long" resultMap="boardMap">
@@ -71,7 +71,16 @@
 			BO_HIT = BO_HIT +1
 		WHERE BO_NO = #{bo_no}
 	</update>
+	<update id="incrementRcmd" parameterType="long">
+		UPDATE BOARD
+		SET
+			BO_RCMD = BO_RCMD +1
+		WHERE BO_NO = #{bo_no}
+	</update>
 	<insert id="insertBoard" parameterType="boardVO">
+		<selectKey resultType="long" keyProperty="bo_no" order="BEFORE">
+			select board_seq.nextval from dual
+		</selectKey>
 		INSERT INTO BOARD (
 		    BO_NO,
 		    BO_WRITER,
@@ -84,7 +93,7 @@
 		    BO_HIT,
 		    BO_RCMD
 		) VALUES (
-		    board_seq.nextval,
+		    #{bo_no},
 		    #{bo_writer},
 		    #{bo_pass},
 		    #{bo_ip},
@@ -96,4 +105,25 @@
 		    0
 		)
 	</insert>
+	<update id="updateBoard" parameterType="boardVO" >
+		UPDATE board
+		    <set>
+		    	<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(bo_mail)">
+			    BO_MAIL=#{bo_mail,jdbcType=VARCHAR},
+			   	</if>
+			   	<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(bo_title)">
+			    BO_TITLE=#{bo_title},
+			    </if>
+			    <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(bo_content)">
+			    BO_CONTENT=#{bo_content}
+			    </if>
+			</set>
+		WHERE
+		    BO_NO =#{bo_no}
+	</update>
+	<delete id="deleteBoard" parameterType="long">
+		DELETE FROM BOARD
+		WHERE
+		    BO_NO = #{bo_no}
+	</delete>
 </mapper>

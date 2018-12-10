@@ -54,7 +54,7 @@ public interface IBoardService {
 	 * @param board
 	 * @return BoardException, INVALIDPASSWORD, OK, FAILED
 	 */
-	public int modifyBoard(BoardVO board);
+	public ServiceResult modifyBoard(BoardVO board);
 	
 	/**
 	 * 글삭제

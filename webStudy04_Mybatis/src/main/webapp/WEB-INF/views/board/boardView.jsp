@@ -69,6 +69,19 @@
 			<th>추천수</th>
 			<td>${board.bo_rcmd}</td>
 		</tr>
+		<tr>
+			<td colspan="2">
+				<c:url value="/board/boardUpdate.do" var="updateURL">
+					<c:param name="what" value="${board.bo_no }"/>
+				</c:url>
+				<input type="button" value="수정" onclick="location.href='${updateURL}';">
+				<c:url value="/board/boardDelete.do" var="deleteURL">
+					<c:param name="bo_no" value="${board.bo_no }"/>
+					<c:param name="bo_pass" value="${board.bo_pass }"/>
+				</c:url>
+				<input type="button" value="삭제" onclick="location.href='${deleteURL}';">
+			</td>
+		</tr>
 	</table>
 	<form action="${pageContext.request.contextPath}/reply/replyInsert.do"
 		name="replyForm">

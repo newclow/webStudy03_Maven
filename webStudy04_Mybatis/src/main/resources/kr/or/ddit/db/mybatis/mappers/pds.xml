@@ -27,7 +27,7 @@
 		
 		<foreach collection="pdsList" item="pds" index="idx" 
 				separator=" UNION ALL " >
-				SELECT  #{bo_no},    #{pds.pds_filename},
+				SELECT  #{pds.bo_no},    #{pds.pds_filename},
 			    #{pds.pds_savename},    #{pds.pds_mime},    #{pds.pds_size},
 			    #{pds.pds_fancysize} FROM DUAL			
 		</foreach>	
@@ -45,6 +45,18 @@
 		    PDS
 		WHERE PDS_NO=#{pds_no}
 	</select>
+	<delete id="deletePds" parameterType="long" >
+		DELETE FROM PDS
+		WHERE
+		    PDS_NO = #{pds_no}
+	</delete>
+	<delete id="deletePdses" parameterType="long">
+		DELETE FROM PDS
+		WHERE PDS_NO IN
+		<foreach collection="delFiles" item="pds_no" open="(" close=")" separator=",">
+			#{pds_no}
+		</foreach>
+	</delete>
 </mapper>
 
 

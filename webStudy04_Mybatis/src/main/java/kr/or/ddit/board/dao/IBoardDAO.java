@@ -65,9 +65,10 @@ public interface IBoardDAO {
 	/**
 	 * 글수정
 	 * @param board
+	 * @param session TODO
 	 * @return row Count
 	 */
-	public int updateBoard(BoardVO board);
+	public int updateBoard(BoardVO board, SqlSession session);
 	
 	/**
 	 * 글삭제 
