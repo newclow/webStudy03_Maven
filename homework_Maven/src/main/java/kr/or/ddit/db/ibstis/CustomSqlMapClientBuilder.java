@@ -11,7 +11,7 @@ public class CustomSqlMapClientBuilder {
 	private static SqlMapClient sqlMapClient;
 	static {
 		try(
-			Reader reader = Resources.getResourceAsReader("kr/or/ddit/db/ibatis/SqlMapConfig.xml");
+			Reader reader = Resources.getResourceAsReader("kr/or/ddit/db/mybatis/Config.xml");
 		) {
 			 sqlMapClient = SqlMapClientBuilder.buildSqlMapClient(reader);
 		} catch (IOException e) {

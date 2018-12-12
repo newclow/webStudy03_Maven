@@ -4,23 +4,25 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import com.ibatis.sqlmap.client.SqlMapClient;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
-import kr.or.ddit.db.ibstis.CustomSqlMapClientBuilder;
-import kr.or.ddit.vo.BuyerVO;
+
+import kr.or.ddit.mybatis.CustomSqlSessionFactoryBuilder;
 
 public class OtherDAOImpl implements IOtherDAO {
 	
-	SqlMapClient sqlMapClient = CustomSqlMapClientBuilder.getSqlMapClient();
+	SqlSessionFactory sqlSessionFactory = CustomSqlSessionFactoryBuilder.getSqlSessionFactory();
 	
 	@Override
 	public Map<String, String> selectLprodList() {
-		try {
-			return sqlMapClient.queryForMap("Other.selectLprodList", null, "LPROD_GU", "LPROD_NM");
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+		try(
+				SqlSession session = sqlSessionFactory.openSession();
+		){
+			IOtherDAO mapper = session.getMapper(IOtherDAO.class);
+			return mapper.selectLprodList();
 		}
+		
+		
 	}
-
-
 }

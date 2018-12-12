@@ -19,7 +19,7 @@ public class BuyerServiceImpl implements IBuyerService {
 	public ServiceResult createBuyer(BuyerVO buyer) {
 		ServiceResult result = null;
 		if (buyerDAO.selectBuyer(buyer.getBuyer_id()) == null) {
-			String str = buyerDAO.insertBuyer(buyer);
+			int rowCnt = buyerDAO.insertBuyer(buyer);
 			if (StringUtils.isNotBlank(str)) {
 				result = ServiceResult.OK;
 			} else {

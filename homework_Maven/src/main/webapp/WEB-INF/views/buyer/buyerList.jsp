@@ -92,18 +92,18 @@
 				<nav aria-label="Page navigation example">
 				 	<%=pagingVO.getPagingHTML() %> 
 				</nav>			
-				<form action="searchForm">
+				<script type="text/javascript">
+					document.searchForm.searchType.value = "<%=Objects.toString(pagingVO.getSearchType(), "all")  %>";
+				</script>
+				<form name="searchForm" > <!-- action이 아니라 name, 경로도 주의 -->
 					<select name="searchType">
 						<option value="all" selected="selected">전체</option>
 						<option value="name">거래처명</option>
-						<option value="add">주소</option>
-						<script type="text/javascript">
-							document.searchForm.searchType.value = "<%=Objects.toString(pagingVO.getSearchType(), "all")  %>";
-						</script>
-						<input type="text" name="searchWord" value="<%=Objects.toString(pagingVO.getSearchWord(), "") %>">
-						<input type="submit" name="검색">
+						<option value="backName">예금주</option>
 					</select>
-				</form>
+					<input type="text" name="searchWord" value="<%=Objects.toString(pagingVO.getSearchWord(), "") %>">
+					<input type="submit" value="검색"> <!-- name이 아니라 value다 -->
+				</form>  
 			</td>
 		</tr>
 	</tfoot>
